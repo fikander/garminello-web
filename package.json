@@ -8,8 +8,9 @@
     "start": "node src/server.js"
   },
   "dependencies": {
-    "express": "^4.13.3",
+    "pg": "4.x",
     "mustache": "2.2.1",
+    "express": "^4.13.3",
     "consolidate": "*",
     "node-trello": "1.1.2"
   }

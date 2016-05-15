@@ -22,5 +22,13 @@ docker-compose up
 heroku logs --tail
 heroku run node
 heroku run bash
+
 heroku open
+
 heroku local web
+
+heroku config
+heroku config:set VARIABLE=x
+
+heroku addons:create heroku-postgresql:hobby-dev
+heroku pg:psql
