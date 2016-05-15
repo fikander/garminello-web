@@ -5,13 +5,15 @@ const express = require('express'),
     Trello = require('node-trello');
 
 // Constants
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const APP_NAME = 'Garminello';
 const TRELLO_API_KEY = process.env.TRELLO_API_KEY;
 const TRELLO_OAUTH_SECRET = process.env.TRELLO_OAUTH_SECRET;
 
 // App
 const app = express();
+
+app.set('port', PORT);
 
 // template engine
 app.engine('html', cons.mustache);
@@ -83,5 +85,6 @@ app.get('/api/board_lists', function(req, res) {
     });
 });
 
-app.listen(PORT);
-console.log('Running on http://localhost:' + PORT);
+app.listen(app.get('port'), function() {
+    console.log('Running on port:' + app.get('port'));
+});
