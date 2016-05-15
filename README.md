@@ -16,3 +16,11 @@ ngrok http 8080
 docker-compose build
 docker-compose up
 
+
+# Heroku
+
+heroku logs --tail
+heroku run node
+heroku run bash
+heroku open
+heroku local web
