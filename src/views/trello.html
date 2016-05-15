@@ -1,0 +1,42 @@
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="https://api.trello.com/1/client.js?key={{ trello_api_key }}"></script>
+</head>
+<body>
+	Redirecting to Trello..
+	<script>
+		var authenticationSuccess = function() {
+			Trello.members.get('me', function(me) {
+				console.log('hello ' + me.fullName);
+				$.ajax({
+					url: '/trello_set_token?token=' + Trello.token() + '&id=' + me.id,
+					success: function(data) {
+						console.log('token set successfully');
+						window.location.href = "/";
+					},
+					error: function() {
+						console.log('Error setting token');
+					}
+				});
+			});
+		};
+		var authenticationFailure = function() {
+			console.log('Failed authentication');
+		};
+
+		Trello.deauthorize();
+		Trello.authorize({
+			type: 'redirect',
+			persist: 'true',
+			name: '{{ app_name }}',
+			scope: {
+		    	read: true
+			},
+			expiration: 'never',
+			success: authenticationSuccess,
+			error: authenticationFailure
+		});
+	</script>
+</body>
+</html>

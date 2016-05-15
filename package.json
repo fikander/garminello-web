@@ -1,0 +1,16 @@
+{
+  "name": "garminello_web_app",
+  "version": "1.0.0",
+  "description": "Garmin Trello app",
+  "author": "First Last <first.last@example.com>",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "mustache": "2.2.1",
+    "consolidate": "*",
+    "node-trello": "1.1.2"
+  }
+}
