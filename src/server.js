@@ -8,6 +8,7 @@ const express = require('express'),
 // Constants
 const PORT = process.env.PORT || 8080;
 const APP_NAME = 'Garminello';
+const VERSION = '1.0';
 const TRELLO_API_KEY = process.env.TRELLO_API_KEY;
 const TRELLO_OAUTH_SECRET = process.env.TRELLO_OAUTH_SECRET;
 
@@ -62,7 +63,7 @@ app.get('/api/boards', function(req, res) {
     t.get('/1/members/me/boards', {fields: 'name'}, function(err, data) {
         if (err) {
             console.log(err);
-            res.send(null);
+            res.status(400).send(err);
         } else {
             console.log(data);
             res.send(data);
@@ -78,12 +79,18 @@ app.get('/api/board_lists', function(req, res) {
     t.get('/1/boards/' + board_id + '/lists', {fields: 'name', cards: 'open', card_fields: 'name'}, function(err, data) {
         if (err) {
             console.log(err);
-            res.send(null);
+            res.status(400).send(err);
         } else {
             console.log(data);
             res.send(data);
         }
     });
+});
+
+app.get('/api/config', function(req, res) {
+    console.log(req.query);
+    var watch_id = req.query.watch;
+    res.status(200).send({version: VERSION});
 });
 
 app.get('/db_test', function(req, res) {
