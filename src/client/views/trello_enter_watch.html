@@ -25,6 +25,7 @@
 				url: '/bind_trello_watch?ttoken=' + '{{ ttoken }}' + '&watch_id=' + $("#watch-id").val(),
 				success: function(data) {
 					console.log(data);
+					window.location.href="/?message=Watch registered";
 				},
 				error: function(err) {
 					$('#error-message').text(err.responseText);

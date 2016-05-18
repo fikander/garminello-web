@@ -24,7 +24,7 @@ app.set('views', './src/client/views');
 
 
 app.get('/', function(req, res) {
-    res.render('index');
+    res.render('index', { trello_api_key: TRELLO_API_KEY, message: req.query.message });
 });
 
 // app.get('/', function (req, res) {
