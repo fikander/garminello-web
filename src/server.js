@@ -12,6 +12,11 @@ const VERSION = '1.0';
 const TRELLO_API_KEY = process.env.TRELLO_API_KEY;
 const TRELLO_OAUTH_SECRET = process.env.TRELLO_OAUTH_SECRET;
 
+// max card title length
+const TRELLO_CARD_NAME_SIZE = process.env.TRELLO_CARD_NAME_SIZE || 50;
+// max number of cards
+const TRELLO_CARD_COUNT = process.env.TRELLO_CARD_COUNT || 80;
+
 // App
 const app = express();
 
@@ -146,10 +151,19 @@ app.get('/api/board_lists', function(req, res) {
                     console.log(err);
                     res.status(400).send(err);
                 } else {
-                    // shorten cards
-                    var result;
+                    // limit number of cards and cut their titles to X chars
+                    var cards = 0;
                     data.forEach(function(list, i) {
-                        list["cards"] = list["cards"].slice(0, 1);
+                        var list_cards = list["cards"].length;
+                        if (cards + list_cards > TRELLO_CARD_COUNT) {
+                            // cut some cards off
+                            list["cards"].splice(Math.max(TRELLO_CARD_COUNT - cards, 0));
+                        }
+                        // cut cards titles
+                        list["cards"].forEach(function(card, j) {
+                            card.name = card.name.substr(0, TRELLO_CARD_NAME_SIZE);
+                        });
+                        cards += list_cards;
                     });
                     res.json(data);
                 }
