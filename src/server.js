@@ -126,7 +126,7 @@ app.get('/api/boards', function(req, res) {
                     res.status(400).send(err);
                 } else {
                     console.log(data);
-                    res.send(data);
+                    res.json(data);
                 }
             });            
         } else {
@@ -148,7 +148,7 @@ app.get('/api/board_lists', function(req, res) {
                     res.status(400).send(err);
                 } else {
                     console.log(data);
-                    res.send(data);
+                    res.json(data);
                 }
             });
         } else {
@@ -161,7 +161,7 @@ app.get('/api/config', function(req, res) {
     console.log(req.query);
     var watch_id = req.query.watch;
     profile_from_watch(watch_id, function(status, result) {
-        res.status(status).send(result);
+        res.status(status).json(result);
     })
 });
 
