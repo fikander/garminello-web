@@ -90,29 +90,47 @@ app.get('/bind_trello_watch', function(req, res) {
 
 // UTILS
 
-var profile_from_watch = function(watch_id) {
+var profile_from_watch = function(watch_id, callback) {
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-        client.query('SELECT * FROM watch_mapping WHERE watch=' + watch_id, function(err, result) {
+        if (err) {
             done();
-            return result;
+            console.log(err);
+            return callback(500, json({success: false, data: err}));
+        }
+        var q = client.query("SELECT * FROM watch_trello_map WHERE watch_id=($1)", [watch_id], function(error, result) {
+            done();
+            if (error) {
+                console.log(error);
+                return callback(400, "Couldn't recognise watch");
+            }
+            if (result.rowCount != 1) {
+                return callback(400, "Register watch");
+            } else {
+                return callback(200, result.rows[0]);
+            }
         });
     });
 };
-
 
 // API
 
 app.get('/api/boards', function(req, res) {
     console.log(req.query);
     var watch_id = req.query.watch;
-    var t = new Trello(TRELLO_API_KEY, ttoken);
-    t.get('/1/members/me/boards', {fields: 'name'}, function(err, data) {
-        if (err) {
-            console.log(err);
-            res.status(400).send(err);
+    profile_from_watch(watch_id, function(status, result) {
+        if (status == 200) {
+            var t = new Trello(TRELLO_API_KEY, result.trello_token);
+            t.get('/1/members/me/boards', {fields: 'name'}, function(err, data) {
+                if (err) {
+                    console.log(err);
+                    res.status(400).send(err);
+                } else {
+                    console.log(data);
+                    res.send(data);
+                }
+            });            
         } else {
-            console.log(data);
-            res.send(data);
+            res.status(status).send(result);
         }
     });
 });
@@ -121,14 +139,20 @@ app.get('/api/board_lists', function(req, res) {
     console.log(req.query);
     var watch_id = req.query.watch;
     var board_id = req.query.board_id;
-    var t = new Trello(TRELLO_API_KEY, ttoken);
-    t.get('/1/boards/' + board_id + '/lists', {fields: 'name', cards: 'open', card_fields: 'name'}, function(err, data) {
-        if (err) {
-            console.log(err);
-            res.status(400).send(err);
+    profile_from_watch(watch_id, function(status, result) {
+        if (status == 200) {
+            var t = new Trello(TRELLO_API_KEY, result.trello_token);
+            t.get('/1/boards/' + board_id + '/lists', {fields: 'name', cards: 'open', card_fields: 'name'}, function(err, data) {
+                if (err) {
+                    console.log(err);
+                    res.status(400).send(err);
+                } else {
+                    console.log(data);
+                    res.send(data);
+                }
+            });
         } else {
-            console.log(data);
-            res.send(data);
+            res.status(status).send(result);
         }
     });
 });
@@ -136,21 +160,9 @@ app.get('/api/board_lists', function(req, res) {
 app.get('/api/config', function(req, res) {
     console.log(req.query);
     var watch_id = req.query.watch;
-    res.status(200).send({version: VERSION});
-});
-
-app.get('/db_test', function(req, res) {
-    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-        client.query('SELECT * FROM test_table', function(err, result) {
-            done();
-            if (err) {
-                console.error(err);
-                res.send("Error " + err);
-            } else {
-                res.send(result.rows);
-            }
-        });
-    });
+    profile_from_watch(watch_id, function(status, result) {
+        res.status(status).send(result);
+    })
 });
 
 app.listen(app.get('port'), function() {
