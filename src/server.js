@@ -20,11 +20,8 @@ app.set('port', PORT);
 // template engine
 app.engine('html', cons.mustache);
 app.set('view engine', 'html');
-app.set('views', './src/views');
+app.set('views', './src/client/views');
 
-
-// TEMP: cache of trello stuff
-var ttoken, tid;
 
 app.get('/', function(req, res) {
     res.render('index');
@@ -49,12 +46,61 @@ app.get('/trello_authorise', function (req, res) {
     res.render('trello', { trello_api_key: TRELLO_API_KEY, app_name: APP_NAME });
 });
 
-app.get('/trello_set_token', function(req, res) {
-    console.log(req.query);
-    ttoken = req.query.token;
-    tid = req.query.id;
-    res.send('ok\n');
+app.get('/trello_authorise_enter_watch', function(req, res) {
+    res.render('trello_enter_watch', { trello_api_key: TRELLO_API_KEY, app_name: APP_NAME, ttoken: req.query.ttoken });
 });
+
+app.get('/bind_trello_watch', function(req, res) {
+    console.log(req.query);
+    var ttoken = req.query.ttoken;
+    var watch_id = req.query.watch_id;
+    // check sanity of watch_id
+    if (watch_id.length != 8) {
+        res.status(400).send("Watch code must consist of 8 characters.");
+        return;
+    }
+    if(/^[A-Z0-9]*$/.test(watch_id) == false) {
+       res.status(400).send("Watch code should contain uppercase letters or digits.");
+       return;
+    }
+    // insert new watch id in the database
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+        if (err) {
+            done();
+            console.log(err);
+            return res.status(500).send(json({success: false, data: err}));
+        }
+        var q = client.query('INSERT INTO watch_trello_map(watch_id, trello_token, user_id) values($1, $2, $3)', [watch_id, ttoken, 0]);
+        q.on('error', function(error) {
+            done();
+            console.log("ERROR " + error);
+            // http://www.postgresql.org/docs/9.4/static/errcodes-appendix.html
+            if (error.code == "23505") {
+                res.status(400).send("This watch code is already registered.");
+            } else {
+                res.status(400).send("Error registering watch.");
+            }
+        });
+        q.on('end', function(result) {
+            done();
+            res.status(200).send('ok');
+        });
+    });
+});
+
+// UTILS
+
+var profile_from_watch = function(watch_id) {
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+        client.query('SELECT * FROM watch_mapping WHERE watch=' + watch_id, function(err, result) {
+            done();
+            return result;
+        });
+    });
+};
+
+
+// API
 
 app.get('/api/boards', function(req, res) {
     console.log(req.query);

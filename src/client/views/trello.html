@@ -7,24 +7,13 @@
 	Redirecting to Trello..
 	<script>
 		var authenticationSuccess = function() {
-			Trello.members.get('me', function(me) {
-				console.log('hello ' + me.fullName);
-				$.ajax({
-					url: '/trello_set_token?token=' + Trello.token() + '&id=' + me.id,
-					success: function(data) {
-						console.log('token set successfully');
-						window.location.href = "/";
-					},
-					error: function() {
-						console.log('Error setting token');
-					}
-				});
-			});
+			console.log('Auth successful');
+			window.location.href = "/trello_authorise_enter_watch?ttoken=" + Trello.token();
 		};
 		var authenticationFailure = function() {
 			console.log('Failed authentication');
+			window.location.href= "/trello_authorise?message=Authentication failed.";
 		};
-
 		Trello.deauthorize();
 		Trello.authorize({
 			type: 'redirect',

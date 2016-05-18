@@ -1,0 +1,38 @@
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="https://api.trello.com/1/client.js?key={{ trello_api_key }}"></script>
+</head>
+<body>
+	<h1>Hello<div id="full-name"></div></h1>
+	<p>Enter 8 character watch code</p>
+	<div id="error-message"></div>
+	<form>
+		<div>
+			<input type="text" id="watch-id" class="" placeholder="Enter code.."></input>
+			<button type="submit" id="submit-code" class="">Register</button>
+		</div>
+	</form>
+	<script>
+		Trello.setToken("{{ ttoken }}");
+		Trello.members.get('me', function(me) {
+			console.log('hello ' + me.fullName);
+			$("#full-name").text(me.fullName);
+		});
+
+		$("#submit-code").on("click", function(e) {
+			$.ajax({
+				url: '/bind_trello_watch?ttoken=' + '{{ ttoken }}' + '&watch_id=' + $("#watch-id").val(),
+				success: function(data) {
+					console.log(data);
+				},
+				error: function(err) {
+					$('#error-message').text(err.responseText);
+					console.log(err);
+				}
+			});
+			e.preventDefault();
+		});
+	</script>
+</body>
+</html>
