@@ -51,7 +51,7 @@ app.get('/trello_authorise_enter_watch', function(req, res) {
 });
 
 app.get('/bind_trello_watch', function(req, res) {
-    console.log(req.query);
+    //console.log(req.query);
     var ttoken = req.query.ttoken;
     var watch_id = req.query.watch_id;
     // check sanity of watch_id
@@ -115,7 +115,7 @@ var profile_from_watch = function(watch_id, callback) {
 // API
 
 app.get('/api/boards', function(req, res) {
-    console.log(req.query);
+    //console.log(req.query);
     var watch_id = req.query.watch;
     profile_from_watch(watch_id, function(status, result) {
         if (status == 200) {
@@ -125,7 +125,6 @@ app.get('/api/boards', function(req, res) {
                     console.log(err);
                     res.status(400).send(err);
                 } else {
-                    console.log(data);
                     res.json(data);
                 }
             });            
@@ -136,7 +135,7 @@ app.get('/api/boards', function(req, res) {
 });
 
 app.get('/api/board_lists', function(req, res) {
-    console.log(req.query);
+    //console.log(req.query);
     var watch_id = req.query.watch;
     var board_id = req.query.board_id;
     profile_from_watch(watch_id, function(status, result) {
@@ -147,7 +146,11 @@ app.get('/api/board_lists', function(req, res) {
                     console.log(err);
                     res.status(400).send(err);
                 } else {
-                    console.log(data);
+                    // shorten cards
+                    var result;
+                    data.forEach(function(list, i) {
+                        list["cards"] = list["cards"].slice(0, 1);
+                    });
                     res.json(data);
                 }
             });
@@ -158,7 +161,7 @@ app.get('/api/board_lists', function(req, res) {
 });
 
 app.get('/api/config', function(req, res) {
-    console.log(req.query);
+    //console.log(req.query);
     var watch_id = req.query.watch;
     profile_from_watch(watch_id, function(status, result) {
         res.status(status).json(result);
