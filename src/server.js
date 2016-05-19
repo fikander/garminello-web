@@ -178,6 +178,11 @@ app.get('/api/config', function(req, res) {
     //console.log(req.query);
     var watch_id = req.query.watch;
     profile_from_watch(watch_id, function(status, result) {
+        if (status == 456) {
+            // Hack for Connect IQ SDK which turns all 400 codes into single -400
+            status = 200;
+            result = { status: 456 };
+        }
         res.status(status).json(result);
     })
 });
