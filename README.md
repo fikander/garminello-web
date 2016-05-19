@@ -32,3 +32,10 @@ heroku config:set VARIABLE=x
 
 heroku addons:create heroku-postgresql:hobby-dev
 heroku pg:psql
+
+
+# User manual
+
+- Only 80 cards will be returned for per board because of memory limitations on the devices
+- Currently open board is saved on the device, so network connection is not required when you exit the app. The same board will open next time you open it.
+ 

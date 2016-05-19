@@ -108,8 +108,8 @@ var profile_from_watch = function(watch_id, callback) {
                 console.log(error);
                 return callback(400, "Couldn't recognise watch");
             }
-            if (result.rowCount != 1) {
-                return callback(400, "Register watch");
+            if (result.rowCount < 1) {
+                return callback(456, "Register watch");
             } else {
                 return callback(200, result.rows[0]);
             }
