@@ -134,6 +134,11 @@ app.get('/api/boards', function(req, res) {
                 }
             });            
         } else {
+            if (status == 456) {
+                // Hack for Connect IQ SDK which turns all 400 codes into single -400
+                status = 200;
+                result = { status: 456 };
+            }
             res.status(status).send(result);
         }
     });
@@ -169,6 +174,11 @@ app.get('/api/board_lists', function(req, res) {
                 }
             });
         } else {
+            if (status == 456) {
+                // Hack for Connect IQ SDK which turns all 400 codes into single -400
+                status = 200;
+                result = { status: 456 };
+            }
             res.status(status).send(result);
         }
     });
