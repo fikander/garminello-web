@@ -4,6 +4,18 @@
 npm install -g ngrok
 npm install -g nodemon
 
+
+# Dev
+
+docker-compose up -d
+docker-compose logs
+# init database
+docker exec -it garminelloweb_web_1 node src/models/database.js
+# database prompt
+docker exec -it garminelloweb_db_1 bash
+> psql --use postgres
+
+
 # Run dev env
 
 - terminal 1
