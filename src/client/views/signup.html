@@ -1,6 +1,6 @@
-<html>
-{{> _header}}
-<body>
+{% extends 'layouts/default.html' %}
+
+{% block content %}
 <div class="container">
 
     <div class="col-sm-6 col-sm-offset-3">
@@ -9,16 +9,20 @@
 
         <div class="alert alert-danger">{{ message }}</div>
 
-        <form action="/signup" method="post">
+        <form action="/register" method="post">
             <div class="form-group">
                 <label>Email</label>
-                <input type="text" class="form-control" name="email">
+                <input id="username" type="text" class="form-control" name="un">
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" class="form-control" name="password">
+                <input id="password" type="password" class="form-control" name="pw">
             </div>
-            <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+            <div class="form-group">
+                <label>Validate Password</label>
+                <input id="validate_password" type="password" class="form-control" name="vpw"/>
+            </div>
+            <button type="submit" class="btn btn-warning btn-lg">Register</button>
         </form>
 
         <hr>
@@ -27,5 +31,4 @@
     </div>
 
 </div>
-</body>
-</html>
+{% endblock %}

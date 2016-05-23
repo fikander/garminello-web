@@ -1,6 +1,6 @@
-<html>
-{{> _header}}
-<body>
+{% extends 'layouts/default.html' %}
+
+{% block content %}
 	<h1>Hello<div id="full-name"></div></h1>
 	<p>Enter 8 character watch code</p>
 	<div id="error-message"></div>
@@ -32,5 +32,4 @@
 			e.preventDefault();
 		});
 	</script>
-</body>
-</html>
+{% endblock %}

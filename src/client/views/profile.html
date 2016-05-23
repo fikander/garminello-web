@@ -1,6 +1,6 @@
-<html>
-{{> _header}}
-<body>
+{% extends 'layouts/default.html' %}
+
+{% block content %}
 <div class="container">
     <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
@@ -11,14 +11,12 @@
             <div class="well">
                 <h3><span class="fa fa-user"></span> Local</h3>
                 <p>
-                    <strong>id</strong>: {{ user.id }}<br>
-                    <strong>email</strong>: {{ user.email }}<br>
-                    <strong>name</strong>: {{ user.name }}
+                    <strong>id</strong>: {{ user.get('id') }}<br>
+                    <strong>email</strong>: {{ user.get('email') }}<br>
                 </p>
             </div>
         </div>
 
     </div>
 </div>
-</body>
-</html>
+{% endblock %}

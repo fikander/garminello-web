@@ -1,6 +1,6 @@
-<html>
-{{> _header}}
-<body>
+{% extends 'layouts/default.html' %}
+
+{% block content %}
 	Redirecting to Trello..
 	<script>
 		var authenticationSuccess = function() {
@@ -24,5 +24,4 @@
 			error: authenticationFailure
 		});
 	</script>
-</body>
-</html>
+{% endblock %}

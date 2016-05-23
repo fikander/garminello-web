@@ -1,6 +1,6 @@
-<html>
-{{> _header}}
-<body>
+{% extends 'layouts/default.html' %}
+
+{% block content %}
 <div class="container">
 
 	<h1>{{ app_name }}</h1>
@@ -11,19 +11,18 @@
 	    <form action="/login" method="post">
 	        <div class="form-group">
 	            <label>Email</label>
-	            <input type="text" class="form-control" name="email">
+	            <input id="username" type="text" class="form-control" name="un" value="{{ username }}">
 	        </div>
 	        <div class="form-group">
 	            <label>Password</label>
-	            <input type="password" class="form-control" name="password">
+	            <input id="password" type="password" class="form-control" name="pw">
 	        </div>
 	        <button type="submit" class="btn btn-warning btn-lg">Login</button>
 	    </form>
 
         <hr>
 
-	    <p>Need an account? <a href="/signup">Signup</a></p>
+	    <p>Need an account? <a href="/register">Register</a></p>
 	</div>
 </div>
-</body>
-</html>
+{% endblock %}
