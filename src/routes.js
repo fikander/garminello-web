@@ -1,47 +1,33 @@
 const config = require('./config/app');
-const pg = require('pg');
+const loginController = require('./controllers/login');
+const indexController = require('./controllers/index');
+const apiController = require('./controllers/api');
 
 module.exports = function(app) {
 
-	app.get('/', function(req, res) {
-	    res.render('index', {
-	    	trello_api_key: config.TRELLO_API_KEY,
-	    	app_name: config.APP_NAME,
-	    	message: req.query.message,
-	    	partials: {_header: '_header'}
-	   	});
-	});
+    // Auth
+    app.get('/register', loginController.registerPage);
+    app.post('/register', loginController.registerPost);
+    app.get('/login', loginController.loginPage);
+    app.post('/login', loginController.checkLogin);
+    app.get('/logout', loginController.logout);
 
-	// app.get('/', function (req, res) {
-	//     console.log(req.headers.host);
-	//     console.log(req.protocol);
-	//     console.log(req.originalUrl);
-	//     var return_url = req.protocol + "://" + req.headers.host + '/trello_token';
-	//     res.redirect(
-	//         "https://trello.com/1/authorize?"+
-	//         "expiration=never" +
-	//         "&name=Garminello" + 
-	//         "&key=" + TRELLO_API_KEY +
-	//         "&scope=read" + 
-	//         "&callback_method=postMessage" +
-	//         "&return_url=" + return_url);
-	// });
+    // Auth Middleware
+    function ensureAuthenticated(req, res, next) {
+        if (req.isAuthenticated()) { return next(); }
+        res.redirect('/login');
+    }
 
-	app.get('/trello_authorise', function (req, res) {
-	    res.render('trello', {
-	    	trello_api_key: config.TRELLO_API_KEY,
-	    	app_name: config.APP_NAME,
-	    	partials: {_header: '_header'}
-	    });
-	});
+    // Home
+	app.get('/', indexController.home);
+	app.get('/home', ensureAuthenticated, indexController.profile);
+	app.get('/trello_authorise', ensureAuthenticated, indexController.trelloAuthorise);
+	app.get('/trello_authorise_enter_watch', ensureAuthenticated, indexController.trelloAuthoriseEnterWatch);
 
-	app.get('/trello_authorise_enter_watch', function(req, res) {
-	    res.render('trello_enter_watch', {
-	    	trello_api_key: config.TRELLO_API_KEY,
-	    	app_name: config.APP_NAME,
-	    	ttoken: req.query.ttoken,
-	    	partials: {_header: '_header'}
-	   	});
-	});
+	// API
+	app.get('/bind_trello_watch', apiController.bindTrelloWatch);
+	app.get('/api/boards', apiController.apiBoards);
+	app.get('/api/board_lists', apiController.apiBoardLists);
+	app.get('/api/config', apiController.apiConfig);
 
 }
