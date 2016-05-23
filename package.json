@@ -2,23 +2,36 @@
   "name": "garminello_web_app",
   "version": "1.0.0",
   "description": "Garmin Trello app",
-  "author": "First Last <first.last@example.com>",
+  "author": "Tomasz Kustrzynski <tomasz.kustrzynski@gmail.com>",
   "main": "src/server.js",
+  "engines": {
+    "node": ">=0.10.x",
+    "npm": ">=1.2.x"
+  },
   "scripts": {
     "start": "node src/server.js"
   },
   "dependencies": {
-    "pg": "4.x",
-    "mustache": "2.2.1",
     "express": "^4.13.3",
+    "body-parser": "^1.12.4",
+    "cookie-parser": "^1.3.5",
     "express-session": "~1.13.0",
     "connect-flash": "~0.1.1",
+    "express-validator": "^2.10.0",
+    "underscore": "^1.8.3",
+
+    "pg": "4.x",
+    "knex": "^0.8.6",
+    "bookshelf": "^0.8.1",
+
     "consolidate": "*",
+    "swig": "^1.4.2",
 
     "node-trello": "1.1.2",
 
     "passport": "~0.3.2",
     "passport-local": "~1.0.0",
-    "passport-facebook": "~2.1.1"
+    "passport-facebook": "~2.1.1",
+    "crypto": "^0.0.3"
   }
 }
