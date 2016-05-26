@@ -5,23 +5,28 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const expressValidator = require('express-validator');
-
 const cons = require('consolidate');
 
 const passport = require('passport');
 const session = require('express-session');
+const crypto = require('crypto');
 const messages = require('./util/messages');
 
+const Trello = require('node-trello');
+
 const config = require('./config/app');
-const knex = require('knex')({
-	client: 'pg',
-	connection: config.DATABASE_URL
+const db_config = require('./config/db');
+const knex = require('knex')(db_config[config.ENVIRONMENT]);
+// initialise latest database
+knex.migrate.latest({
+	directory: './src/migrations',
+	tableName: 'knex_migrations'
+}).then(function() {
+  return knex.seed.run({
+  	directory: './src/seeds'
+  });
 });
 const Bookshelf = require('bookshelf');
-
-const crypto = require('crypto');
-
-const Trello = require('node-trello');
 
 // Constants
 const PORT = process.env.PORT || 8080;
@@ -55,8 +60,6 @@ app.use(messages());
 require('./util/passport')(passport);
 // routes
 require('./routes.js')(app);
-require('./auth_routes.js')(app, passport);
-require('./api_routes.js')(app);
 
 app.listen(app.get('port'), function() {
     console.log('Running on port:' + app.get('port'));

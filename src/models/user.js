@@ -1,19 +1,25 @@
 var Bookshelf = require('bookshelf').postgres;
 
 var User = Bookshelf.Model.extend({
-        tableName: 'users'
+    tableName: 'users',
+    watches: function() {
+		return this.hasMany(Watch);
+	}
 });
-
 module.exports.User = User;
 
-/*
-module.exports = function() {
-    var bookshelf = {};
+var Watch = Bookshelf.Model.extend({
+	tableName: 'watches',
+	user: function() {
+		return this.belongsTo(User);
+	}
+});
+module.exports.Watch = Watch;
 
-    bookshelf.User = Bookshelf.Model.extend({
-        tableName: 'users'
-    });
-
-    return bookshelf;
-}
-*/
+var TrelloToken = Bookshelf.Model.extend({
+	tableName: 'trello_tokens',
+	user: function() {
+		return this.belongsTo(User);
+	}
+});
+module.exports.TrelloToken = TrelloToken;

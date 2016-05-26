@@ -2,6 +2,8 @@
 module.exports = Object.freeze({
 	APP_NAME: 'Garminello',
 	VERSION: '1.0',
+	DEBUG: process.env.DEBUG || false,
+	ENVIRONMENT: process.env.ENVIRONMENT || 'production', // development|staging|production
 
 	DATABASE_URL: process.env.DATABASE_URL,
 
