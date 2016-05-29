@@ -2,16 +2,15 @@ const config = require('../config/app');
 const models = require('../models/models');
 const Trello = require('node-trello');
 
-/*
+//
+// 1. Watch generates activation code
+// 2. This app creates watch object on the server (user supplies activation code)
+//  - watch UUID generated, 'active' set to false
+// 3. Watch invokes /api/watch/register with activation code
+//  - response contains watch UUID for that activation code, to be used in any calls from now on
+//  - watch active set to true
+//
 
-- watch generates activation code
-- create watch object on the server (user supplies activation code)
--- watch secret generated, active set to false
-- watch invokes /api/watch/register with activation code
--- response contains watch secret for that activation code
--- watch active set to true
-
-*/
 
 exports.getWatches = function(req, res) {
     var user_id = req.user.get('id');
@@ -73,32 +72,14 @@ exports.addWatch = function(req, res) {
         })
 }
 
-
-// UTILS
-/*
-var profile_from_watch = function(watch_id, callback) {
-    pg.connect(config.DATABASE_URL, function(err, client, done) {
-        if (err) {
-            done();
-            console.log(err);
-            return callback(500, json({success: false, data: err}));
-        }
-        var q = client.query("SELECT * FROM watch_trello_map WHERE watch_id=($1)", [watch_id], function(error, result) {
-            done();
-            if (error) {
-                console.log(error);
-                return callback(400, "Couldn't recognise watch");
-            }
-            if (result.rowCount < 1) {
-                return callback(456, "Register watch");
-            } else {
-                return callback(200, result.rows[0]);
-            }
-        });
-    });
-};
-*/
+//
 // Watch API
+//
+// Note: Always returns {status: status, error: "error"} json for errors. This is Garmin's IQ SDK
+// limitation - it doesn't pass status codes other than 200 to the actual watch app.
+//
+
+
 exports.watchUuidParam = function(req, res, next, watch_uuid) {
     new models.Watch().where('uuid', watch_uuid).fetch({require: true, withRelated: ['user.trelloToken']})
         .then(function(watch) {
@@ -110,34 +91,32 @@ exports.watchUuidParam = function(req, res, next, watch_uuid) {
             res.json({status: 456, error: "Register watch"});
         }).catch(function(err) {
             console.error(err);
-            res.json({status: 400, error: "Error getting watch data"});
+            res.json({status: 400, error: "Error getting watch data: " + err});
         })
 }
 
+
 exports.apiRegister = function(req, res) {
     // check activation code is waiting
-    // send secret back. from now on this is required for any watch api calls
+    // send UUID back. from now on UUID is required for any watch api calls
     var activation_code = req.body['activation_code'];
     var profile = req.body['profile'];
     var type = req.body['type'];
-    new models.Watch({activation_code: activation_code, active: false}).fetch()
+    new models.Watch({activation_code: activation_code, active: false}).fetch({require: true})
         .then(function(watch) {
-            if (watch) {
-                var activated = new Date().toISOString().slice(0, 19).replace('T', ' ');
-                watch.save({
-                        profile: profile,
-                        active: true,
-                        activated_at: activated,
-                        type: type
-                    }).then(function(watch){
-                        res.json(watch);
-                    });
-            } else {
-                res.status(401).send("Register watch with activation code");
-            }
-        })
-        .catch(function(err) {
-            res.status(500).send(err);
+            var activated = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            watch.save({
+                    profile: profile,
+                    active: true,
+                    activated_at: activated,
+                    type: type
+                }).then(function(watch){
+                    res.json(watch);
+                });
+        }).catch(models.Watch.NotFoundError, function() {
+            res.json({status: 456, error: "Register activation code first"});
+        }).catch(function(err) {
+            res.json({status: 400, error: err});
         })
 }
 
@@ -170,29 +149,8 @@ exports.apiBoards = function(req, res) {
             return res.json(data);
         }
     });
-/*
-    profile_from_watch(watch_id, function(status, result) {
-        if (status == 200) {
-            var t = new Trello(config.TRELLO_API_KEY, result.trello_token);
-            t.get('/1/members/me/boards', {fields: 'name'}, function(err, data) {
-                if (err) {
-                    console.log(err);
-                    res.status(400).send(err);
-                } else {
-                    res.json(data);
-                }
-            });            
-        } else {
-            if (status == 456) {
-                // Hack for Connect IQ SDK which turns all 400 codes into single -400
-                status = 200;
-                result = { status: 456 };
-            }
-            res.status(status).send(result);
-        }
-    });
-*/
 }
+
 
 exports.apiBoardLists = function(req, res) {
     var board_id = req.params.board_id;

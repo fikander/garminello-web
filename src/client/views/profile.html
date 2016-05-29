@@ -35,6 +35,7 @@
         $.ajax({
             url:'/api/watches',
             success: function(watches) {
+                $("#watch_list").empty();
                 _.each(watches, function(watch) {
                     $("#watch_list").append('<li>' + watch['type'] + ': ' + watch['created_at'] + ' active: ' + watch['active'] + " " + JSON.stringify(watch) + '</li>');
                 });
