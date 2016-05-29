@@ -1,6 +1,6 @@
 const config = require('../config/app');
 
-    // Home
+// Home
 exports.home = function(req, res) {
     res.render('index', {
     	trello_api_key: config.TRELLO_API_KEY,

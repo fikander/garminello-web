@@ -32,9 +32,8 @@ exports.registerPost = function(req, res) {
     
     var new_salt = Math.round((new Date().valueOf() * Math.random())) + '';
     var pw = crypto.createHmac('sha1', new_salt).update(pwu).digest('hex');
-    var created = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    new models.User({email: un, password: pw, salt: new_salt, created: created}).save().then(function(model) {
+    new models.User({email: un, password: pw, salt: new_salt}).save().then(function(model) {
         passport.authenticate('local')(req, res, function () {
             res.redirect('/home');
         })

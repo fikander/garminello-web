@@ -10,6 +10,7 @@ exports.up = function(knex, Promise) {
 			table.string('password', 60).notNullable().defaultTo('');
 			table.boolean('active').defaultTo(true);
 			table.string('salt', 50).notNullable().defaultTo('');
+			table.json('features');
 			table.timestamps();
 		}),
 
@@ -19,8 +20,10 @@ exports.up = function(knex, Promise) {
 				.references('id').inTable('users')
 				.onDelete('CASCADE');
 			table.string('activation_code', 8).notNullable();
-			table.string('secret', 32).notNullable();
-			table.string('type', 32).notNullable();
+			table.string('uuid', 32).unique().notNullable();
+			table.string('type', 32);
+			table.boolean('active').default(false);
+			table.datetime('activated_at').default(null);
 			table.json('profile');
 			table.timestamps();
 		}),

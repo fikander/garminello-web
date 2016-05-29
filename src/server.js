@@ -12,8 +12,6 @@ const session = require('express-session');
 const crypto = require('crypto');
 const messages = require('./util/messages');
 
-const Trello = require('node-trello');
-
 const config = require('./config/app');
 const db_config = require('./config/db');
 const knex = require('knex')(db_config[config.ENVIRONMENT]);
@@ -22,9 +20,11 @@ knex.migrate.latest({
 	directory: './src/migrations',
 	tableName: 'knex_migrations'
 }).then(function() {
-  return knex.seed.run({
-  	directory: './src/seeds'
-  });
+	if (config.ENVIRONMENT == 'development') {
+		return knex.seed.run({
+			directory: './src/seeds'
+		});
+	}
 });
 const Bookshelf = require('bookshelf');
 
