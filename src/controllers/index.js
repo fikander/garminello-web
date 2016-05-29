@@ -18,17 +18,8 @@ exports.profile = function(req, res) {
 
 
 exports.trelloAuthorise = function (req, res) {
-    res.render('trello', {
+    res.render('trello_authorise', {
     	trello_api_key: config.TRELLO_API_KEY,
     	app_name: config.APP_NAME
     });
-}
-
-
-exports.trelloAuthoriseEnterWatch = function(req, res) {
-    res.render('trello_enter_watch', {
-    	trello_api_key: config.TRELLO_API_KEY,
-    	app_name: config.APP_NAME,
-    	ttoken: req.query.ttoken
-   	});
 }

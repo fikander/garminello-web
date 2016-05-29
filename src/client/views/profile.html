@@ -13,6 +13,7 @@
                 <p>
                     <strong>id</strong>: {{ user.get('id') }}<br>
                     <strong>email</strong>: {{ user.get('email') }}<br>
+                    <div id="trello"></div>
                 </p>
             </div>
         </div>
@@ -37,7 +38,7 @@
             success: function(watches) {
                 $("#watch_list").empty();
                 _.each(watches, function(watch) {
-                    $("#watch_list").append('<li>' + watch['type'] + ': ' + watch['created_at'] + ' active: ' + watch['active'] + " " + JSON.stringify(watch) + '</li>');
+                    $("#watch_list").append('<li>' + watch['type'] + ': ' + watch['created_at'] + ' active: ' + watch['active'] + ' ' + JSON.stringify(watch) + '</li>');
                 });
             },
             error: function(data) {
@@ -46,14 +47,33 @@
         });
     }
 
+    var refreshTrello = function() {
+        $.ajax({
+            url: '/api/trello_token',
+            type: 'GET',
+            contentType: "application/json",
+            dataType: 'json',
+            success: function(data) {
+                $("#trello").empty();
+                $("#trello").append('<div>' + JSON.stringify(data) + '</div>');
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+
     $(document).ready(function() {
 
         refreshWatches();
+        refreshTrello();
 
         $('#register_watch').on('click', function(event) {
             $.ajax({
                 url:'/api/watches',
                 type: 'POST',
+                contentType: "application/json",
+                dataType: 'json',
                 data: JSON.stringify({
                     activation_code: $('#activation_code').val()
                 }),
@@ -62,9 +82,7 @@
                 },
                 error: function(data) {
                     console.log(data.responseText);
-                },
-                contentType: "application/json",
-                dataType: 'json'
+                }
             });
             event.preventDefault();
         });

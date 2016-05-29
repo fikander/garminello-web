@@ -1,0 +1,46 @@
+{% extends 'layouts/default.html' %}
+
+{% block content %}
+	Redirecting to Trello..
+	<script>
+		var authenticationSuccess = function() {
+			console.log('Auth successful');
+			Trello.members.get('me', function(me) {
+				$.ajax({
+					url: '/api/trello_token',
+	                type: 'POST',
+	                contentType: "application/json",
+	                dataType: 'json',
+	                data: JSON.stringify({
+	                    trello_token: Trello.token(),
+	                    trello_username: me.fullName
+	                }),
+					success: function(data) {
+						console.log(data);
+						window.location.href="/?message=Watch registered";
+					},
+					error: function(err) {
+						console.log(err);
+						window.location.href="/?message=" + err.responseText;
+					}
+				});
+			});
+		};
+		var authenticationFailure = function() {
+			console.log('Failed authentication');
+			window.location.href= "/?message=Authentication failed.";
+		};
+		Trello.deauthorize();
+		Trello.authorize({
+			type: 'redirect',
+			persist: 'true',
+			name: '{{ app_name }}',
+			scope: {
+		    	read: true
+			},
+			expiration: 'never',
+			success: authenticationSuccess,
+			error: authenticationFailure
+		});
+	</script>
+{% endblock %}

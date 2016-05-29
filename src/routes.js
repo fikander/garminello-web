@@ -18,11 +18,12 @@ module.exports = function(app) {
 
     // Bind trello
 	app.get('/trello_authorise', ensureAuthenticated, indexController.trelloAuthorise);
-	app.get('/trello_authorise_enter_watch', ensureAuthenticated, indexController.trelloAuthoriseEnterWatch);
 
 	// API
     app.get('/api/watches', ensureApiAuthenticated, apiController.getWatches);
     app.post('/api/watches', ensureApiAuthenticated, apiController.addWatch);
+    app.get('/api/trello_token', ensureApiAuthenticated, apiController.getTrelloToken);
+    app.post('/api/trello_token', ensureApiAuthenticated, apiController.addTrelloToken);
 
     // API used from watch
     // - different auth rules

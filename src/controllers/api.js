@@ -51,25 +51,58 @@ exports.addWatch = function(req, res) {
        res.status(400).send("Watch code should contain uppercase letters or digits.");
        return;
     }
-    // is there identical activation code waiting for activation?
-    new models.Watch({activation_code, active: false}).fetch()
+    new models.Watch({activation_code: activation_code, active: false}).fetch({require: true})
         .then(function(watch) {
-            if (!watch) {
-                // insert new watch id in the database
-                var watch = new models.Watch({
-                    user_id: user_id,
-                    activation_code: activation_code,
-                    uuid: makeid(24)
-                }).save().then(function(watch) {
-                    return res.json(watch);
-                }).catch(function(err) {
-                    console.error(err);
-                    return res.status(500).json({error: err});
-                })
-            } else {
-                return res.status(500).json({error: 'Refresh activation code on your watch.'})
-            }
-        })
+            // there is identical activation code waiting for activation
+            res.status(400).json({error: 'Refresh activation code on your watch.'})
+        }).catch(models.Watch.NotFoundError, function() {
+            var watch = new models.Watch({
+                user_id: user_id,
+                activation_code: activation_code,
+                uuid: makeid(24)
+            }).save().then(function(watch) {
+                res.json(watch);
+            }).catch(function(err) {
+                console.error(err);
+                res.status(500).json({error: err});
+            })
+        });
+}
+
+
+exports.getTrelloToken = function(req, res) {
+    var user_id = req.user.get('id');
+    new models.TrelloToken({user_id: user_id}).fetch()
+        .then(function(token) {
+            res.json(token);
+        }).catch(function(err) {
+            res.status(500).json({error: err});
+        });
+}
+
+
+exports.addTrelloToken = function(req, res) {
+    var user_id = req.user.get('id');
+    var trello_token = req.body['trello_token'];
+    new models.TrelloToken({user_id: user_id}).fetch({require:true})
+        .then(function(token) {
+            token.save({
+                username: req.body['trello_username'],
+                token: trello_token
+            }).then(function(token) {
+                res.end();
+            });
+        }).catch(models.TrelloToken.NotFoundError, function() {
+            new models.TrelloToken({
+                user_id: user_id,
+                username: req.body['trello_username'],
+                token: trello_token
+            }).save().then(function(token) {
+                res.end();
+            });
+        }).catch(function(err) {
+            res.status(500).json({error: err});
+        });
 }
 
 //
