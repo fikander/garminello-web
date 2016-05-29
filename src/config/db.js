@@ -9,6 +9,7 @@ module.exports = {
   },
   production: {
   	client: 'postgresql',
-  	connection: config.DATABASE_URL
+  	connection: config.DATABASE_URL,
+  	debug: config.DEBUG
   }
 }
