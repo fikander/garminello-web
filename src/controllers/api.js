@@ -155,12 +155,18 @@ exports.apiRegister = function(req, res) {
 
 
 exports.apiConfig = function(req, res) {
-    res.json({
-        active: req.watch.get('active'),
-        user: {
-            features: req.user.get('features')
-        }
-    });
+    var app_version = req.query['v'];
+    req.watch.save({app_info: {v: app_version}})
+        .then(function(watch) {
+            res.json({
+                active: watch.get('active'),
+                user: {
+                    features: req.user.get('features')
+                }
+            });
+        }).catch(function(err) {
+            res.json({status: 400, error: err});
+        })
 }
 
 

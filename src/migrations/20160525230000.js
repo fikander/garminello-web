@@ -25,6 +25,7 @@ exports.up = function(knex, Promise) {
 			table.boolean('active').default(false);
 			table.datetime('activated_at').default(null);
 			table.json('profile');
+			table.json('app_info');
 			table.timestamps();
 		}),
 
