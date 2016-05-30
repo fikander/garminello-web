@@ -9,6 +9,7 @@ const cons = require('consolidate');
 
 const passport = require('passport');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const crypto = require('crypto');
 const messages = require('./util/messages');
 
@@ -48,10 +49,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());
 app.use(session({
+	store: new pgSession({
+		conString: config.DATABASE_URL,
+		tableName: 'session'
+	}),
 	secret: 'weroWJgj32hDWOfr923nwfWji32bzppwbi34',
 	resave: true,
-	saveUninitialized: false
+	saveUninitialized: false,
+	cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
