@@ -14,6 +14,7 @@
                     <strong>id</strong>: {{ user.get('id') }}<br>
                     <strong>email</strong>: {{ user.get('email') }}<br>
                     <div id="trello"></div>
+                    <button id="trello_delete">Unauthorise</button>
                 </p>
             </div>
         </div>
@@ -38,7 +39,20 @@
             success: function(watches) {
                 $("#watch_list").empty();
                 _.each(watches, function(watch) {
-                    $("#watch_list").append('<li>' + watch['type'] + ': ' + watch['created_at'] + ' active: ' + watch['active'] + ' ' + JSON.stringify(watch) + '</li>');
+                    $("#watch_list").append(
+                        '<li>' + JSON.stringify(watch) + '<button id="watch_' + watch.id + '">Delete</button></li>');
+                    $("#watch_" + watch.id).on('click', function(event) {
+                        $.ajax({
+                            url:'/api/watches/' + watch.id,
+                            type: 'DELETE',
+                            success: function(data) {
+                                refreshWatches();
+                            },
+                            error: function(err) {
+                                console.log(err);
+                            }
+                        });                        
+                    });
                 });
             },
             error: function(data) {
@@ -58,6 +72,7 @@
                 $("#trello").append('<div>' + JSON.stringify(data) + '</div>');
             },
             error: function(err) {
+                $("#trello").empty();
                 console.log(err);
             }
         });
@@ -85,6 +100,19 @@
                 }
             });
             event.preventDefault();
+        });
+
+        $('#trello_delete').on('click', function(event) {
+            $.ajax({
+                url:'/api/trello_token',
+                type: 'DELETE',
+                success: function(data) {
+                    refreshTrello();
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
         });
     });
 </script>

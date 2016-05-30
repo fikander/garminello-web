@@ -22,8 +22,10 @@ module.exports = function(app) {
 	// API
     app.get('/api/watches', ensureApiAuthenticated, apiController.getWatches);
     app.post('/api/watches', ensureApiAuthenticated, apiController.addWatch);
+    app.delete('/api/watches/:id', ensureApiAuthenticated, apiController.deleteWatch);
     app.get('/api/trello_token', ensureApiAuthenticated, apiController.getTrelloToken);
     app.post('/api/trello_token', ensureApiAuthenticated, apiController.addTrelloToken);
+    app.delete('/api/trello_token', ensureApiAuthenticated, apiController.deleteTrelloToken);
 
     // API used from watch
     // - different auth rules

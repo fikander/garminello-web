@@ -5,9 +5,7 @@ var insert_all = function(knex, Promise) {
     return Promise.each([
         // user with watches and trello token
         knex('users').insert({
-            first_name: 'tomek',
-            last_name: 'k',
-            email: 'tomasz.kustrzynski@gmail.com',
+            email: 'a@example.com',
             password: 'a21867e105a93f50025cb11e08a34c771e602d79', //abc
             active: true,
             salt: '467443809468',
@@ -49,9 +47,7 @@ var insert_all = function(knex, Promise) {
         }),
         // user with watch, but no trello tokens
         knex('users').insert({
-            first_name: 'tomek',
-            last_name: 'k2',
-            email: 'tomasz@tomasz.com',
+            email: 'b@example.com',
             password: 'a21867e105a93f50025cb11e08a34c771e602d79', //abc
             active: true,
             salt: '467443809468',

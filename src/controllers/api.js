@@ -14,14 +14,15 @@ const Trello = require('node-trello');
 
 exports.getWatches = function(req, res) {
     var user_id = req.user.get('id');
-    new models.User().where('id', user_id).fetch({require: true, withRelated: ['watches']})
+    new models.User().where({id: user_id})
+        .fetch({require: true, withRelated: ['watches']})
         .then(function(user) {
             return res.json(user.related('watches'));
         }).catch(models.User.NotFoundError, function() {
-            return res.json(400, {error: req.user + ' not found'});
+            return res.status(404).json({error: req.user + ' not found'});
         }).catch(function(err) {
             console.error(err);
-            return res.json(500, {error: err});
+            return res.status(500).json({error: err});
         });
 }
 
@@ -70,11 +71,25 @@ exports.addWatch = function(req, res) {
 }
 
 
+exports.deleteWatch = function(req, res) {
+    var watch_id = req.params.id;
+    new models.Watch({id: watch_id})
+        .destroy()
+        .then(function(watch) {
+            res.end();
+        }).catch(function(err){
+            res.status(500).json({error: err});
+        });
+}
+
+
 exports.getTrelloToken = function(req, res) {
     var user_id = req.user.get('id');
-    new models.TrelloToken({user_id: user_id}).fetch()
+    new models.TrelloToken({user_id: user_id}).fetch({require: true})
         .then(function(token) {
             res.json(token);
+        }).catch(models.TrelloToken.NotFoundError, function(){
+            res.status(404).end();
         }).catch(function(err) {
             res.status(500).json({error: err});
         });
@@ -105,6 +120,19 @@ exports.addTrelloToken = function(req, res) {
         });
 }
 
+
+exports.deleteTrelloToken = function(req, res) {
+    var user_id = req.user.get('id');
+    new models.TrelloToken()
+        .where({user_id: user_id})
+        .destroy()
+        .then(function(token) {
+            res.end();
+        }).catch(function(err) {
+            res.status(500).json({error: err});
+        });
+}
+
 //
 // Watch API
 //
@@ -114,7 +142,8 @@ exports.addTrelloToken = function(req, res) {
 
 
 exports.watchUuidParam = function(req, res, next, watch_uuid) {
-    new models.Watch().where('uuid', watch_uuid).fetch({require: true, withRelated: ['user.trelloToken']})
+    new models.Watch().where({uuid: watch_uuid})
+        .fetch({require: true, withRelated: ['user.trelloToken']})
         .then(function(watch) {
             req.watch = watch;
             req.user = watch.related('user');
