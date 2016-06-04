@@ -5,7 +5,6 @@ var Application = function() {
 };
 
 Application.prototype.initialize = function() {
-	window.alert('hello!');
 	$('app').html('<div>');
 };
 

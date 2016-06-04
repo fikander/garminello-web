@@ -72,11 +72,11 @@ gulp.task('uglify', ['browserify-client'], function() {
     .pipe(gulp.dest('public/javascripts'));
 });
 
-gulp.task('build', ['uglify', 'minify']);
-
 gulp.task('clean', function() {
-  return del(['build']);
+  return del(['build', 'public']);
 });
+
+gulp.task('build', ['clean', 'uglify', 'minify']);
 
 gulp.task('watch', function() {
   gulp.watch('src/client/**/*.js', ['build', 'test']);
