@@ -10,7 +10,6 @@ const cons = require('consolidate');
 const passport = require('passport');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
-const crypto = require('crypto');
 const messages = require('./util/messages');
 
 const config = require('./config/app');
@@ -21,7 +20,7 @@ knex.migrate.latest({
 	directory: './src/migrations',
 	tableName: 'knex_migrations'
 }).then(function() {
-	if (config.ENVIRONMENT == 'development') {
+	if (config.ENVIRONMENT === 'development') {
 		return knex.seed.run({
 			directory: './src/seeds'
 		});
@@ -63,6 +62,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(messages());
+app.use('/static', express.static('public'));
 
 require('./util/passport')(passport);
 // routes

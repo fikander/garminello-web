@@ -23,6 +23,8 @@
     "context"    : false,
     "describe"   : false,
     "it"         : false,
-    "window"     : false
+    "window"     : false,
+    "$"          : false,
+    "jQuery"     : false
   }
 }
