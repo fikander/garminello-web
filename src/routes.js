@@ -1,4 +1,5 @@
-const config = require('./config/app');
+'use strict';
+
 const loginController = require('./controllers/login');
 const indexController = require('./controllers/index');
 const apiController = require('./controllers/api');

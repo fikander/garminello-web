@@ -1,3 +1,5 @@
+'use strict';
+
 var Bookshelf = require('bookshelf').postgres;
 
 var User = Bookshelf.Model.extend({

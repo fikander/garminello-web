@@ -1,3 +1,5 @@
+'use strict';
+
 var crypto = require('crypto'),
     passport = require('passport'),
     models = require('../models/models');
@@ -5,7 +7,7 @@ var crypto = require('crypto'),
 
 exports.registerPage = function(req, res) {
     res.render('signup', {username: req.flash('username')});
-}
+};
 
 
 exports.registerPost = function(req, res) {
@@ -36,17 +38,17 @@ exports.registerPost = function(req, res) {
     new models.User({email: un, password: pw, salt: new_salt}).save().then(function(model) {
         passport.authenticate('local')(req, res, function () {
             res.redirect('/home');
-        })
+        });
     }, function(err) {
         req.flash('error', 'Unable to create account.');
         res.redirect('/register');
     });
-}
+};
 
 
 exports.loginPage = function(req, res) {
     res.render('login', {username: req.flash('username')});
-}
+};
 
 
 exports.checkLogin = function(req, res, next) {
@@ -66,11 +68,11 @@ exports.checkLogin = function(req, res, next) {
             return res.redirect('/home');
         });
     })(req, res, next);
-}
+};
 
 
 exports.logout = function(req, res) {
     req.logout();
     req.flash('info', 'You are now logged out.');
     res.redirect('/login');
-}
+};

@@ -1,3 +1,5 @@
+'use strict';
+
 //configuring the strategies for passport
 const crypto = require('crypto');
 const LocalStrategy = require('passport-local').Strategy;
@@ -10,12 +12,12 @@ module.exports = function(passport) {
     // required for persistent login sessions
     // passport needs ability to serialize and unserialize users out of session
     passport.serializeUser(function(user, done) {
-        console.log("passport::serializeUser " + user.id);
+        console.log('passport::serializeUser ' + user.id);
         done(null, user.id);
     });
 
     passport.deserializeUser(function(user_id, done) {
-        console.log("passport::deserializeUser " + user_id);
+        console.log('passport::deserializeUser ' + user_id);
         new models.User({id: user_id}).fetch().then(function(user) {
             return done(null, user);
         }, function(error) {
@@ -31,7 +33,7 @@ module.exports = function(passport) {
             var sa = user.get('salt');
             var pw = user.get('password');
             var upw = crypto.createHmac('sha1', sa).update(password).digest('hex');
-            if (upw == pw) {
+            if (upw === pw) {
                 return done(null, user);
             }
             return done(null, false, {'message': 'Invalid password'});
@@ -39,4 +41,4 @@ module.exports = function(passport) {
             return done(null, false, {'message': 'Unknown user'});
         });
     }));
-}
+};

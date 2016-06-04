@@ -1,3 +1,5 @@
+'use strict';
+
 var flash = require('connect-flash');
 
 module.exports = function() {
@@ -17,5 +19,5 @@ module.exports = function() {
         }   
         res.locals.isAuthenticated = req.isAuthenticated();
         next();
-    }
-}
+    };
+};

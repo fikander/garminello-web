@@ -1,5 +1,4 @@
-
-
+'use strict';
 
 var insert_all = function(knex, Promise) {
     return Promise.each([
@@ -42,7 +41,7 @@ var insert_all = function(knex, Promise) {
                     updated_at: '2016-05-28 0:0:0'
                 })
             ], function(result, index, length) {
-                console.log("done: " + index + " of: " + length);
+                console.log('done: ' + index + ' of: ' + length);
             });
         }),
         // user with watch, but no trello tokens
@@ -69,11 +68,11 @@ var insert_all = function(knex, Promise) {
                     updated_at: '2016-05-28 0:0:0'
                 })
             ], function(result, index, length) {
-                console.log("done: " + index + " of: " + length);
+                console.log('done: ' + index + ' of: ' + length);
             });
         })
     ]);
-}
+};
 
 exports.seed = function(knex, Promise) {
 
