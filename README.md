@@ -13,7 +13,7 @@ docker-compose logs
 docker exec -it garminelloweb_web_1 node src/models/database.js
 # database prompt
 docker exec -it garminelloweb_db_1 bash
-> psql --use postgres
+> psql --user postgres
 
 
 # Run dev env
@@ -51,3 +51,17 @@ heroku pg:psql
 - Only 80 cards will be returned for per board because of memory limitations on the devices
 - Currently open board is saved on the device, so network connection is not required when you exit the app. The same board will open next time you open it.
  
+ # Technologies and libraries
+ - Docker
+ - heroku
+ - NodeJS
+ - Knex, Bookshelf
+ - Promises
+ - BackboneJS
+ - REST API
+
+
+# TODO
+
+use backbone and react
+https://blog.engineyard.com/2015/integrating-react-with-backbone
