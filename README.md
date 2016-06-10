@@ -26,8 +26,8 @@ Run Docker containers:
 
 Then in the docker container:
 
-	./node_modules/.bin/gulp build
-	./node_modules/.bin/gulp watch
+	gulp build
+	gulp watch
 
 to start watching and rebuilding client stuff.
 
@@ -74,6 +74,8 @@ Some useful commands for deploying with Heroku:
 - gulp and browserify to setup client app build environment
 - REST API
 
-# TODO
+# Useful articles
+
+- http://www.leanpanda.com/blog/2015/06/28/amd-requirejs-commonjs-browserify/
 
 - use backbone and react: https://blog.engineyard.com/2015/integrating-react-with-backbone

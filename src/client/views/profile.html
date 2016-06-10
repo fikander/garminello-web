@@ -1,7 +1,21 @@
 {% extends 'layouts/default.html' %}
 
+{% block scripts %}
+    <script src="//api.trello.com/1/client.js?key={{ trello_api_key }}"></script>
+    <script src="/static/javascripts/garminello.js"></script>
+{% endblock %}
+
 {% block content %}
-<div class="container">
+<script id="watch_template" type="text/template">
+    type: <%= type %>
+    active: <%= active %>
+    created: <%=created_at %>
+    updated: <%= updated_at %>
+    activated: <%= activated_at %>
+    <button class="delete">Unregister</button>
+</script>
+
+<div id="root" class="container">
     <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
@@ -19,48 +33,19 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <ul id="watch_list"></ul>
-        </div>
-    </div>
-    <div class="row">
-        <form action="" method="">
-            <div class="form-group">
-                <label>Activation code</label>
-                <input id="activation_code" type="text" class="form-control" name="activation" placeholder="8 character code">
+            <div id="watchList">
+                <form id="register_watch_form" action="" method="">
+                    <div class="form-group">
+                        <label>Activation code</label>
+                        <input id="activation_code" type="text" class="form-control" name="activation" placeholder="8 character code">
+                    </div>
+                    <button id="register_watch" type="submit" class="btn btn-warning btn-lg">Register Watch</button>
+                </form>
             </div>
-            <button id="register_watch" type="submit" class="btn btn-warning btn-lg">Register Watch</button>
-        </form>
+        </div>
     </div>
 </div>
 <script>
-    var refreshWatches = function() {
-        $.ajax({
-            url:'/api/watches',
-            success: function(watches) {
-                $("#watch_list").empty();
-                _.each(watches, function(watch) {
-                    $("#watch_list").append(
-                        '<li>' + JSON.stringify(watch) + '<button id="watch_' + watch.id + '">Delete</button></li>');
-                    $("#watch_" + watch.id).on('click', function(event) {
-                        $.ajax({
-                            url:'/api/watches/' + watch.id,
-                            type: 'DELETE',
-                            success: function(data) {
-                                refreshWatches();
-                            },
-                            error: function(err) {
-                                console.log(err);
-                            }
-                        });                        
-                    });
-                });
-            },
-            error: function(data) {
-                console.log(data.responseText);
-            }
-        });
-    }
-
     var refreshTrello = function() {
         $.ajax({
             url: '/api/trello_token',
@@ -77,28 +62,7 @@
     }
 
     $(document).ready(function() {
-
-        refreshWatches();
         refreshTrello();
-
-        $('#register_watch').on('click', function(event) {
-            $.ajax({
-                url:'/api/watches',
-                type: 'POST',
-                contentType: "application/json",
-                dataType: 'json',
-                data: JSON.stringify({
-                    activation_code: $('#activation_code').val()
-                }),
-                success: function(data) {
-                    refreshWatches();
-                },
-                error: function(data) {
-                    console.log(data.responseText);
-                }
-            });
-            event.preventDefault();
-        });
 
         $('#trello_delete').on('click', function(event) {
             $.ajax({

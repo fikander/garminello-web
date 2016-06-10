@@ -1,6 +1,9 @@
-'use strict';
+//window.$ = require('jquery');
+//import $ from 'jquery';
+//window.$ = $;
+import { Application } from './app';
 
-window.$ = window.jQuery = require('jQuery');
-var Application = require('./app');
-
-window.app = new Application();
+$(function() {
+	console.log('STARTING APP');
+	window.app = new Application();
+});

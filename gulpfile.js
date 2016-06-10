@@ -5,8 +5,13 @@ var gulp = require('gulp');
 var rename = require('gulp-rename');
 var del = require('del');
 // Build Dependencies
-var browserify = require('gulp-browserify');
+var browserify = require('browserify');
 var uglify = require('gulp-uglify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var sourcemaps = require('gulp-sourcemaps');
+var gutil = require('gulp-util');
 // Style Dependencies
 var less = require('gulp-less');
 var prefix = require('gulp-autoprefixer');
@@ -30,17 +35,31 @@ gulp.task('lint-test', function() {
 
 
 gulp.task('browserify-client', ['lint-client'], function() {
-  return gulp.src('src/client/index.js')
-    .pipe(browserify({ insertGlobals: true }))
-    .pipe(rename('garminello.js'))
+
+  var b = browserify({
+    entries: 'src/client/index.js',
+    debug: gutil.env.DEBUG
+  }).transform(babelify, {presets: ["es2015"]});
+
+  return b.bundle()
+    .pipe(source('garminello.js'))
+    .pipe(buffer())
+    .on('error', gutil.log)
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('build'))
     .pipe(gulp.dest('public/javascripts'));
 });
 
 gulp.task('browserify-test', ['lint-test'], function() {
-  return gulp.src('src/test/client/index.js')
-    .pipe(browserify({ insertGlobals: true }))
-    .pipe(rename('client-test.js'))
+
+  var b = browserify({
+    entries: 'src/test/client/index.js',
+    debug: gutil.env.DEBUG
+  }).transform(babelify, {presets: ["es2015"]});
+
+  return b.bundle()
+    .pipe(source('client-test.js'))
     .pipe(gulp.dest('build'));
 });
 

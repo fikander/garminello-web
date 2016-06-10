@@ -12,6 +12,8 @@ RUN npm install
 RUN npm install -g nodemon
 COPY . /usr/src/garminello
 
+ENV PATH $PATH:./node_modules/.bin
+
 EXPOSE 8080
 
 CMD ["npm", "start"]

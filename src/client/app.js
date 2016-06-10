@@ -1,12 +1,25 @@
-'use strict';
+import Backbone from 'backbone';
+Backbone.$ = window.$;
 
-var Application = function() {
-	this.initialize();
-};
+import { Router } from './router';
+import { ProfileView } from './views/ProfileView';
 
-Application.prototype.initialize = function() {
-	$('app').html('<div>');
-};
+export class Application {
 
+	constructor() {
+		console.log('Application::constructor');
+		this.router = new Router();
+		this.mainView = new ProfileView({
+			el: $('#root')
+		});
+		this.showApp();
+	}
 
-module.exports = Application;
+	showApp() {
+		this.mainView.render();
+		Backbone.history.start({
+			pushState: true,
+			root: '/home'
+		});
+	}
+}
