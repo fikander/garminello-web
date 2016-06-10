@@ -79,7 +79,7 @@ exports.deleteWatch = function(req, res) {
     new models.Watch({id: watch_id})
         .destroy()
         .then(function(watch) {
-            res.end();
+            res.status(204).end();
         }).catch(function(err){
             res.status(500).json({error: err});
         });
@@ -130,7 +130,7 @@ exports.deleteTrelloToken = function(req, res) {
         .where({user_id: user_id})
         .destroy()
         .then(function(token) {
-            res.end();
+            res.status(204).end();
         }).catch(function(err) {
             res.status(500).json({error: err});
         });
