@@ -1,8 +1,9 @@
 import Backbone from 'backbone';
 import { WatchListView } from './watch-list-view';
+import { TrelloTokenView } from './trello-token-view';
 
 export class ProfileView extends Backbone.View {
-	constructor(options) {
+	constructor(options={}) {
 		console.log('ProfileView::constructor');
 		_.extend(options, {
 			input: '',
@@ -15,10 +16,12 @@ export class ProfileView extends Backbone.View {
 
 	render() {
 		console.log('ProfileView::render');
-		let watchListView = new WatchListView({
+		new WatchListView({
 			el: '#watchList'
 		});
-		watchListView.render();
+		new TrelloTokenView({
+			el: '#trelloToken'
+		});
 //		this.$watchList.empty();
 //		this.$watchList.append(watchListView.render().el);
 		return this;

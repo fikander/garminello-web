@@ -4,7 +4,7 @@ import { WatchList } from './../collections/watch-list';
 import { WatchView } from './watch-view';
 
 export class WatchListView extends BaseView {
-	constructor(options, initial) {
+	constructor(options={}, initial=[]) {
 		_.extend(options, {
 			events: {
 				'click #register_watch': 'registerWatch'

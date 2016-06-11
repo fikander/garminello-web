@@ -19,7 +19,7 @@ export class Application {
 		this.mainView.render();
 		Backbone.history.start({
 			//pushState: true,
-			root: '/home'
+			//root: 'homes'
 		});
 	}
 }

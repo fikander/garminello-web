@@ -2,12 +2,13 @@ import Backbone from 'backbone';
 import { BaseView } from './../base-view';
 
 export class WatchView extends BaseView {
-	constructor(options) {
+	constructor(options={}) {
 		_.extend(options, {
 			tagName: 'div',
 			className: 'watch-container',
 			events: {
-				'click .delete': 'clear'
+				'click .delete': 'clear',
+				'click': 'open'
 			}
 		});
 		super(options);
@@ -37,9 +38,12 @@ export class WatchView extends BaseView {
 			error: (model, response, options)=>{
 				this.showMessage(response.responseText, BaseView.MESSAGE_ERROR);
 				console.error(response.responseText);
-				console.error(response);
 			}
 		});
+	}
+
+	open() {
+		app.router.navigate('watches/' + this.model.get('id'),  {trigger: true});
 	}
 }
 

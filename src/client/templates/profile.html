@@ -15,6 +15,11 @@
     <button class="delete">Unregister</button>
 </script>
 
+<script id="trello_token_template" type="text/template">
+    username: <%= username %>
+    <button class="delete">Unauthorise</button>
+</script>
+
 <div id="root" class="container">
     <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
@@ -30,6 +35,10 @@
                     <div id="trello"></div>
                     <button id="trello_delete">Unauthorise</button>
                 </p>
+            </div>
+            <div class="well">
+                TRELLO TOKEN
+                <div id="trelloToken"></div>
             </div>
         </div>
         <div class="col-sm-6">

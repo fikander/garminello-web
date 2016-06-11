@@ -1,13 +1,15 @@
 import Backbone from 'backbone';
 
 export class Router extends Backbone.Router {
-	constructor() {
-		super();
-		this.routes = {
-			'(/)': 'main',
-			'watch/:id': 'watch',
-			'trello': 'trello'
-		};
+	constructor(options={}) {
+		_.extend(options, {
+			routes: {
+				'': 'main',
+				'watches/:id': 'watches',
+				'trello': 'trello'
+			}
+		});
+		super(options);
 	}
 
 	main() {
@@ -18,7 +20,7 @@ export class Router extends Backbone.Router {
 		console.log('Router::trello');
 	}
 
-	watch(id) {
-		console.log('Router::watch ' + id);
+	watches(id) {
+		console.log('Router::watches ' + id);
 	}
 }
