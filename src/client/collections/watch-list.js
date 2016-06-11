@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import { Watch } from './watch';
+import { Watch } from './../models/watch';
 
 export class WatchList extends Backbone.Collection {
 	constructor(options) {

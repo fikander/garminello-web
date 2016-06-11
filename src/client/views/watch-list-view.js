@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 import { BaseView } from './../base-view';
-import { WatchList } from './../models/watch-list';
+import { WatchList } from './../collections/watch-list';
 import { WatchView } from './watch-view';
 
 export class WatchListView extends BaseView {
