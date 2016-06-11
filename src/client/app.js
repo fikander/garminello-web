@@ -2,7 +2,7 @@ import Backbone from 'backbone';
 Backbone.$ = window.$;
 
 import { Router } from './router';
-import { ProfileView } from './views/ProfileView';
+import { ProfileView } from './views/profile-view';
 
 export class Application {
 
@@ -18,7 +18,7 @@ export class Application {
 	showApp() {
 		this.mainView.render();
 		Backbone.history.start({
-			pushState: true,
+			//pushState: true,
 			root: '/home'
 		});
 	}

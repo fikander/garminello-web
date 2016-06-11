@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import { WatchListView } from './WatchView';
+import { WatchListView } from './watch-list-view';
 
 export class ProfileView extends Backbone.View {
 	constructor(options) {

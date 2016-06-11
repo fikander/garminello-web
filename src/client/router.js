@@ -5,7 +5,8 @@ export class Router extends Backbone.Router {
 		super();
 		this.routes = {
 			'(/)': 'main',
-			'/trello': 'trello'
+			'watch/:id': 'watch',
+			'trello': 'trello'
 		};
 	}
 
@@ -15,5 +16,9 @@ export class Router extends Backbone.Router {
 
 	trello() {
 		console.log('Router::trello');
+	}
+
+	watch(id) {
+		console.log('Router::watch ' + id);
 	}
 }

@@ -41,7 +41,7 @@ app.set('port', PORT);
 // template engine
 app.engine('html', cons.swig);
 app.set('view engine', 'html');
-app.set('views', './src/client/views');
+app.set('views', './src/client/templates');
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: true }));
