@@ -61,5 +61,13 @@
     "jquery": "./node_modules/jquery/dist/jquery.js",
     "underscore": "./node_modules/underscore",
     "backbone": "./node_modules/backbone/backbone.js"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "trello": "global:Trello"
   }
 }

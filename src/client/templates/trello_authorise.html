@@ -1,5 +1,9 @@
 {% extends 'layouts/default.html' %}
 
+{% block scripts %}
+    <script src="//api.trello.com/1/client.js?key={{ trello_api_key }}"></script>
+{% endblock %}
+
 {% block content %}
 	Redirecting to Trello..
 	<script>
@@ -13,22 +17,22 @@
 	                dataType: 'json',
 	                data: JSON.stringify({
 	                    trello_token: Trello.token(),
-	                    trello_username: me.fullName
+	                    trello_username: me.username
 	                }),
 					success: function(data) {
 						console.log(data);
-						window.location.href="/?message=Watch registered";
+						window.location.href="/home";
 					},
 					error: function(err) {
-						console.log(err);
-						window.location.href="/?message=" + err.responseText;
+						console.error(err);
+						$('#messages').append('<li class="error">Error: ' + err.responseText + '</li>');
 					}
 				});
 			});
 		};
 		var authenticationFailure = function() {
 			console.log('Failed authentication');
-			window.location.href= "/?message=Authentication failed.";
+			$('#messages').append('<li class="error">Authentication failed</li>');
 		};
 		Trello.deauthorize();
 		Trello.authorize({

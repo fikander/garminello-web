@@ -14,6 +14,8 @@ exports.home = function(req, res) {
 
 exports.profile = function(req, res) {
 	res.render('profile', {
+        trello_api_key: config.TRELLO_API_KEY,
+        app_name: config.APP_NAME,
 		user: req.user
 	});
 };

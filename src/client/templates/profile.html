@@ -16,8 +16,13 @@
 </script>
 
 <script id="trello_token_template" type="text/template">
-    username: <%= username %>
-    <button class="delete">Unauthorise</button>
+    <a href="<%= me.url %>"><%= me.fullName %> (<%= username %>)</a>
+    Boards:<% print(me.idBoards.length); %>
+    <button class="deauthorise">Deauthorise</button>
+</script>
+
+<script id="trello_token_missing_template" type="text/template">
+    <button class="authorise">Authorise</button>
 </script>
 
 <div id="root" class="container">

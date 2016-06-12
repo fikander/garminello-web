@@ -108,7 +108,7 @@ exports.addTrelloToken = function(req, res) {
                 username: req.body.trello_username,
                 token: trello_token
             }).then(function(token) {
-                res.end();
+                res.status(201).json(token);
             });
         }).catch(models.TrelloToken.NotFoundError, function() {
             new models.TrelloToken({
@@ -116,7 +116,7 @@ exports.addTrelloToken = function(req, res) {
                 username: req.body.trello_username,
                 token: trello_token
             }).save().then(function(token) {
-                res.end();
+                res.status(201).json(token);
             });
         }).catch(function(err) {
             res.status(500).json({error: err});
