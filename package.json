@@ -5,10 +5,11 @@
   "author": "Tomasz Kustrzynski <tomasz.kustrzynski@gmail.com>",
   "main": "src/server.js",
   "engines": {
-    "node": ">=0.10.x",
-    "npm": ">=1.2.x"
+    "node": ">=4.4.5",
+    "npm": ">=2.15.5"
   },
   "scripts": {
+    "postinstall": "gulp build",
     "start": "node src/server.js"
   },
   "dependencies": {
