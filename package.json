@@ -1,6 +1,6 @@
 {
   "name": "garminello_web_app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Garmin Trello app",
   "author": "Tomasz Kustrzynski <tomasz.kustrzynski@gmail.com>",
   "main": "src/server.js",
