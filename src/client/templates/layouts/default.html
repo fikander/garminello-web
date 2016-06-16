@@ -3,34 +3,40 @@
     <head>
         <meta charset="utf-8">
         <title>Garminello</title>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
         <link rel="stylesheet" href="/static/stylesheets/garminello.css">
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
         {% block scripts %}
         {% endblock %}
     </head>
     <body>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                {% if isAuthenticated %}
-                    <li><a href="/home">My Home</a></li>
-                    <li><a href="/trello_authorise">Authorise with Trello</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                {% else %}
-                    <li><a href="/login">Login</a></li>
-                {% endif %}
+        <div id="root" class="container">
+            <nav>
+                <ul>
+                    <li><a href="/">Garminello</a></li>
+                    {% if isAuthenticated %}
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    {% else %}
+                        <li><a href="/login">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+
+            <ul id="messages" class="messages">
+            {% for message in messages %}
+                <li class="alert {{ message.type }}">{{ message.message }}</li>
+            {% endfor %}
             </ul>
-        </nav>
 
-        <ul id="messages">
-        {% for message in messages %}
-            <li class="{{ message.type }}">{{ message.message }}</li>
-        {% endfor %}
-        </ul>
+            {% block content %}{% endblock %}
 
-        {% block content %}{% endblock %}
+            <footer>
+                2016, by <a href="">Tomasz Kustrzynski</a>
+            </footer>
+        </div>
     </body>
 </html>

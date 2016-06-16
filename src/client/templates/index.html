@@ -1,6 +1,26 @@
 {% extends 'layouts/default.html' %}
 
 {% block content %}
-	<h1>{{ app_name }}</h1>
-	<div id="message">{{ message }}</div>
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-check-square-o"></span> {{ app_name }}</h1>
+		<h3>Trello on your Garmin device</h3>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+        	<h4>Access all your Trello boards on Garmin devices</h4>
+        </div>
+        <div class="col-sm-3">
+        	<h4>Offline access to last viewed board</h4>
+        </div>
+        <div class="col-sm-3">
+        	<h4>Todo or shopping lists made easy</h4>
+        </div>
+        <div class="col-sm-3">
+        	<h4>Create workouts or other sequences and play them back on your Garmin device</h4>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

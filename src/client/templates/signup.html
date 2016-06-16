@@ -1,13 +1,10 @@
 {% extends 'layouts/default.html' %}
 
 {% block content %}
-<div class="container">
-
+<div class="row">
     <div class="col-sm-6 col-sm-offset-3">
 
         <h1><span class="fa fa-sign-in"></span> Signup</h1>
-
-        <div class="alert alert-danger">{{ message }}</div>
 
         <form action="/register" method="post">
             <div class="form-group">
@@ -29,6 +26,5 @@
 
         <p>Already have an account? <a href="/login">Login</a></p>
     </div>
-
 </div>
 {% endblock %}
