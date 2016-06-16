@@ -19,6 +19,8 @@ COPY . /home/node/garminello
 #RUN chown -R node /home/node/garminello
 RUN npm install --unsafe-perm
 
+ENV PATH $PATH:./node_modules/.bin
+
 EXPOSE 8080
 
 CMD ["npm", "start"]

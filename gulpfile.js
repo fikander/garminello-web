@@ -91,11 +91,16 @@ gulp.task('uglify', ['browserify-client'], function() {
     .pipe(gulp.dest('public/javascripts'));
 });
 
+gulp.task('assets', function() {
+  return gulp.src('src/client/static/**')
+    .pipe(gulp.dest('public'));
+});
+
 gulp.task('clean', function() {
   return del(['build', 'public']);
 });
 
-gulp.task('build', ['clean', 'uglify', 'minify']);
+gulp.task('build', ['clean', 'uglify', 'minify', 'assets']);
 
 gulp.task('watch', function() {
   gulp.watch('src/client/**/*.js', ['build', 'test']);
