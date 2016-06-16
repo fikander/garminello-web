@@ -19,7 +19,7 @@ export class Watch extends Backbone.Model {
 
 	getIcon(size) {
 		let type = this.get('type');
-		if (Watch.images.hasOwnProperty()) {
+		if (Watch.images.hasOwnProperty(type)) {
 			return Watch.images[type];
 		} else {
 			return Watch.images[null];
