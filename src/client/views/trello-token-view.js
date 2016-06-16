@@ -20,11 +20,16 @@ export class TrelloTokenView extends BaseView {
 			},
 			success: (model, response, options)=>{
 				Trello.setToken(model.get('token'));
-				Trello.members.get('me', (me) => {
-					this.model.set({me: me});
-					this.renderWith();
-					console.log(this.model.attributes);
-				});
+				Trello.members.get('me',
+					(me) => {
+						this.model.set({me: me});
+						this.renderWith();
+					},
+					(error) => {
+						console.error(error);
+						this.renderWithout();
+					}
+				);
 			}
 		});
 

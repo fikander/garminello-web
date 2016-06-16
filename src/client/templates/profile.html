@@ -7,47 +7,61 @@
 
 {% block content %}
 <script id="watch_template" type="text/template">
-    type: <%= type %>
-    active: <%= active %>
-    created: <%=created_at %>
-    updated: <%= updated_at %>
-    activated: <%= activated_at %>
-    <button class="delete">Unregister</button>
+<div class="watch-container">
+    type: <%= model.get('type') %><br/>
+    active: <%= model.get('active') %><br/>
+    created: <%= model.get('created_at') %><br/>
+    updated: <%= model.get('updated_at') %><br/>
+    activated: <%= model.get('activated_at') %><br/>
+    <img src="<%= model.getIcon() %>"/>
+    <button class="delete btn btn-info btn-sm">Unregister</button>
+</div>
 </script>
 
 <script id="trello_token_template" type="text/template">
     <a href="<%= me.url %>"><%= me.fullName %> (<%= username %>)</a>
     Boards:<% print(me.idBoards.length); %>
-    <button class="deauthorise">Deauthorise</button>
+    <button class="deauthorise btn btn-warning">Deauthorise</button>
 </script>
 
 <script id="trello_token_missing_template" type="text/template">
-    <button class="authorise">Authorise</button>
+    <button class="authorise btn btn-info">Authorise</button>
 </script>
 
 <div id="root" class="container">
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <h1><span class="fa fa-check-square-o"></span> {{ app_name }}</h1>
+        <span class="fa fa-user"></span> Logged in as <strong>{{ user.get('email') }}</strong>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
     <div class="row">
         <div class="col-sm-6">
             <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-                <p>
-                    <strong>id</strong>: {{ user.get('id') }}<br>
-                    <strong>email</strong>: {{ user.get('email') }}<br>
-                    <div id="trello"></div>
-                    <button id="trello_delete">Unauthorise</button>
-                </p>
-            </div>
-            <div class="well">
-                TRELLO TOKEN
+                <h3>Trello account</h3>
                 <div id="trelloToken"></div>
             </div>
         </div>
         <div class="col-sm-6">
-            <div id="watchList">
+            <div id="watchList" class="well">
+                <div id="list"></div>
+                <button id="register-watch-button" type="button" class="btn btn-info">Register watch</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Watch Modal Dialog -->
+<div class="modal fade" id="add-watch-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <ul id="messages" class="messages"></ul>
                 <form id="register_watch_form" action="" method="">
                     <div class="form-group">
                         <label>Activation code</label>
@@ -56,38 +70,12 @@
                     <button id="register_watch" type="submit" class="btn btn-warning btn-lg">Register Watch</button>
                 </form>
             </div>
+            <div class="modal-footer">
+                <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
+      
     </div>
 </div>
-<script>
-    var refreshTrello = function() {
-        $.ajax({
-            url: '/api/trello_token',
-            type: 'GET',
-            contentType: "application/json",
-            dataType: 'json'
-        }).done(function(data) {
-            $("#trello").empty();
-            $("#trello").append('<div>' + JSON.stringify(data) + '</div>');
-        }).fail(function(jqXHR, textStatus) {
-            $("#trello").empty();
-            console.log(textStatus);
-        });
-    }
 
-    $(document).ready(function() {
-        refreshTrello();
-
-        $('#trello_delete').on('click', function(event) {
-            $.ajax({
-                url:'/api/trello_token',
-                type: 'DELETE'
-            }).done(function(data) {
-                refreshTrello();
-            }).fail(function(jqXHR, textStatus){
-                console.log(textStatus);
-            });
-        });
-    });
-</script>
 {% endblock %}

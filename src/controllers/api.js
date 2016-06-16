@@ -28,6 +28,19 @@ exports.getWatches = function(req, res) {
         });
 };
 
+exports.getWatch = function(req, res) {
+    var watch_id = req.params.id;
+    new models.Watch().where({id: watch_id})
+        .fetch({require: true})
+        .then(function(watch) {
+            return res.json(watch);
+        }).catch(models.Watch.NotFoundError, function() {
+            return res.status(404).json({error: 'Watch not found'});
+        }).catch(function(err){
+            res.status(500).json({error: err});
+        });
+};
+
 function makeid(length)
 {
     var text = '';
@@ -36,7 +49,7 @@ function makeid(length)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
-}
+};
 
 // generate new watch with an activation code
 exports.addWatch = function(req, res) {

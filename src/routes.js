@@ -22,6 +22,7 @@ module.exports = function(app) {
 
 	// API
     app.get('/api/watches', ensureApiAuthenticated, apiController.getWatches);
+    app.get('/api/watches/:id', ensureApiAuthenticated, apiController.getWatch);
     app.post('/api/watches', ensureApiAuthenticated, apiController.addWatch);
     app.delete('/api/watches/:id', ensureApiAuthenticated, apiController.deleteWatch);
     app.get('/api/trello_token', ensureApiAuthenticated, apiController.getTrelloToken);

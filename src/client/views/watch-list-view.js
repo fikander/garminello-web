@@ -2,12 +2,14 @@ import Backbone from 'backbone';
 import { BaseView } from './../base-view';
 import { WatchList } from './../collections/watch-list';
 import { WatchView } from './watch-view';
+import { AddWatchView } from './add-watch-view';
+import { Watch } from './../models/watch';
 
 export class WatchListView extends BaseView {
 	constructor(options={}, initial=[]) {
 		_.extend(options, {
 			events: {
-				'click #register_watch': 'registerWatch'
+				'click #register-watch-button': 'openAddWatchDialog'
 			}
 		});
 		super(options);
@@ -16,7 +18,7 @@ export class WatchListView extends BaseView {
 
 		this.collection = new WatchList(initial);
 		this.collection.fetch({
-			reset: true,
+			reset: true
 		});
 
 		// called after collection fetched from server
@@ -26,6 +28,7 @@ export class WatchListView extends BaseView {
 
 	render() {
 		console.log('WatchListView::render');
+		this.$el.find('#list').empty();
 		this.collection.each(function(item) {
 			this.renderWatch(item);
 		}, this);
@@ -37,30 +40,22 @@ export class WatchListView extends BaseView {
 		let watchView = new WatchView({
 			model: watch
 		});
-		this.$el.append(watchView.render().el);
+		this.$el.find('#list').append(watchView.render().el);
 	}
 
-	registerWatch(e) {
-		console.log('WatchListView::registerWatch');
-		e.preventDefault();
-		let formData = {};
-		$('#register_watch_form').find('input').each(
-			(i, el) => {
-				if ($(el).val() !== '') {
-					formData[el.id] = $(el).val();
-				}
-			}
-		);
-		// do not add new watch until success response from server
-		this.collection.create(formData, {
-			wait: true,
-			success: (model, response, options)=>{
-				this.clearMessages();
-			},
-			error: (model, response, options)=>{
-				this.showMessage(response.responseText, BaseView.MESSAGE_ERROR);
-				console.error(response.responseText);
-			}
+	openAddWatchDialog(e) {
+		console.log('WatchListView::openDialog');
+		let dialog = new AddWatchView({
+			el: '#add-watch-modal',
+			model: new Watch()
+		});
+		this.listenTo(dialog, 'dialog-close', this.addWatchDialogClosed);
+	}
+
+	addWatchDialogClosed() {
+		console.log('WatchListView::addWatchDialogClosed');
+		this.collection.fetch({
+			reset: true
 		});
 	}
 }
