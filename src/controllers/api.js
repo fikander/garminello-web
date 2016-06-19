@@ -239,6 +239,9 @@ exports.apiBoards = function(req, res) {
 exports.apiBoardLists = function(req, res) {
     var board_id = req.params.board_id;
     var trello_token = req.trelloToken.get('token');
+    // catches e.g. [00m00s] or [ 00m 00s ] or [00m] or [00s]
+    // http://regexr.com/3dld2
+    var min_sec_regex = /\[\s*(?:(\d+)m)*?\s*(?:(\d+)s)*\s*\]/;
     if (trello_token === undefined) {
         return res.json({status: 400, error: 'Register with Trello first'});
     }
@@ -262,8 +265,22 @@ exports.apiBoardLists = function(req, res) {
                         // cut some cards off
                         list.cards.splice(Math.max(config.TRELLO_CARD_COUNT - cards, 0));
                     }
-                    // cut cards titles
+                    // parse times and cut cards titles
                     list.cards.forEach(function(card, j) {
+                        // parse time: minutes and seconds
+                        var minsec = min_sec_regex.exec(card.name);
+                        if (minsec) {
+                            var min = 0;
+                            var sec = 0;
+                            if (minsec[1]) {
+                                min = parseInt(minsec[1]);
+                            }
+                            if (minsec[2]) {
+                                sec = parseInt(minsec[2]);
+                            }
+                            card.t = sec + min * 60;
+                        }
+                        card.name = card.name.replace(min_sec_regex, '');
                         card.name = card.name.substr(0, config.TRELLO_CARD_NAME_SIZE);
                         // ids are long and unnecessary for now
                         delete card.id;

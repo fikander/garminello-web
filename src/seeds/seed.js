@@ -19,7 +19,7 @@ var insert_all = function(knex, Promise) {
                     user_id: response[0],
                     activation_code: 'ABCD1234',
                     uuid: 'ABCDEFGHIJ1234567890',
-                    type: 'vivosmart_hr',
+                    type: 'vivoactive_hr',
                     profile: '{}',
                     activated_at: '2016-05-28 12:00',
                     active: true,
