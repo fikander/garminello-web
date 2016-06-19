@@ -1,11 +1,19 @@
+# What it is
 
-# Install
+Server for garminello - integration of Garmin devices with Trello. 
 
-npm install -g ngrok
-npm install -g nodemon
+# Setup dev environment
 
+Create .env-dev file with environment variables:
 
-# Dev environment
+	DEBUG=true
+	TRELLO_API_KEY=<TRELLO_API_KEY>
+	TRELLO_OAUTH_SECRET=<TRELLO_OAUTH_SECRET>
+	PORT=8080
+	DATABASE_URL=pg://postgres:postgres@postgres:5432/postgres
+	TRELLO_CARD_NAME_SIZE=50
+	TRELLO_CARD_COUNT=80
+	ENVIRONMENT=development
 
 ## Terminal 1
 Forward Docker port to localhost (required for OSX with docker-machine)
@@ -15,9 +23,14 @@ Forward Docker port to localhost (required for OSX with docker-machine)
 ## Terminal 2
 ngrok to expose port outside
 
+	npm install -g ngrok
 	ngrok http 8080
 
 ## Terminal 3
+Copy docker-compose-sample.yml and change it to configure volumes with your local paths:
+
+	cp docker-compose-sample.yml docker-compose.yml
+
 Run Docker containers:
 
 	docker-compose build
@@ -58,6 +71,19 @@ Some useful commands for deploying with Heroku:
 
 	heroku addons:create heroku-postgresql:hobby-dev
 	heroku pg:psql
+
+Heroku config variables to set:
+
+	DATABASE_URL
+	DEBUG
+	TRELLO_API_KEY
+	TRELLO_CARD_COUNT
+	TRELLO_CARD_NAME_SIZE
+	TRELLO_OAUTH_SECRET
+
+Before using heroku local, export settings to local .env:
+
+	heroku config -s  >> .env
 
 # User manual
 

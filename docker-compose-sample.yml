@@ -1,0 +1,21 @@
+version: '2'
+services:
+
+    db:
+        image: postgres
+        volumes:
+            - /var/lib/postgresql/data
+
+    web:
+        build: .
+        env_file: .env-dev
+        restart: always
+        ports:
+            - "8080:8080"
+            - "6419:6419"
+        volumes:
+            - [HOST_FOLDER]/garminello-web/src:/home/node/garminello/src
+            - [HOST_FOLDER]/garminello-web:/home/node/garminello/.all
+        links:
+            - "db:postgres"
+        command: nodemon --debug -L --delay 250ms src/server.js
