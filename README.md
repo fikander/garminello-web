@@ -4,7 +4,7 @@ Server for garminello - integration of Garmin devices with Trello.
 
 # Setup dev environment
 
-Create .env-dev file with environment variables:
+Create .env-dev file with environment variables (see sample.env-dev):
 
 	DEBUG=true
 	TRELLO_API_KEY=<TRELLO_API_KEY>
@@ -72,7 +72,7 @@ Some useful commands for deploying with Heroku:
 	heroku addons:create heroku-postgresql:hobby-dev
 	heroku pg:psql
 
-Heroku config variables to set:
+Heroku config variables to set (see sample.env for example values):
 
 	DATABASE_URL
 	DEBUG
@@ -81,7 +81,7 @@ Heroku config variables to set:
 	TRELLO_CARD_NAME_SIZE
 	TRELLO_OAUTH_SECRET
 
-Before using heroku local, export settings to local .env:
+Before using heroku local, export settings to local .env (copy and edit sample.env):
 
 	heroku config -s  >> .env
 
@@ -103,5 +103,3 @@ Before using heroku local, export settings to local .env:
 # Useful articles
 
 - http://www.leanpanda.com/blog/2015/06/28/amd-requirejs-commonjs-browserify/
-
-- use backbone and react: https://blog.engineyard.com/2015/integrating-react-with-backbone
