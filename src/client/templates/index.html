@@ -7,24 +7,46 @@
 		<h3>Trello on your Garmin device</h3>
     </div>
 
+
+
+    <div class="text-center">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>1. Install the app</h3>
+                <a class="btn btn-lg btn-primary" href="http://apps.garmin.com"><span class="fa fa-external-link"></span> Install</a>
+            </div>
+            <div class="col-sm-6">
+                <h3>2. Sign up and register device</h3>
+                {% if isAuthenticated %}
+                    <a class="btn btn-lg btn-primary" href="/home">Account</a>
+                {% else %}
+                    <a class="btn btn-lg btn-primary" href="/register">Sign up</a>
+                    <p><a href="/login">Already have an account? Login</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <hr/>
+
     <div class="row benefits">
         <div class="col-sm-6">
-        	<h4>Access all your Trello boards on Garmin devices</h4>
-            <img src="/static/images/trello_boards.png"/>
-            <img src="/static/images/select_board.png"/>
+        	<!--<h4>Access all your Trello boards on Garmin devices</h4>-->
+            <img src="/static/images/access_boards_on_device.png"/>
         </div>
         <div class="col-sm-6">
-        	<h4>Offline access to last viewed board</h4>
-            <img src="/static/images/long_descriptions.png"/>
+        	<!--<h4>Offline access to last viewed board</h4>-->
+            <img src="/static/images/offline_access.png"/>
+        </div>
+    </div>
+    <div class="row benefits">
+        <div class="col-sm-6">
+        	<!--<h4>Todo or shopping lists made easy</h4>-->
+            <img src="/static/images/todo_lists.png"/>
         </div>
         <div class="col-sm-6">
-        	<h4>Todo or shopping lists made easy</h4>
-            <img src="/static/images/shopping_list.png"/>
-        </div>
-        <div class="col-sm-6">
-        	<h4>Create workouts or other sequences and play them back on your Garmin device</h4>
-            <img src="/static/images/trello_workout.png"/>
-            <img src="/static/images/playback.png"/>
+        	<!--<h4>Create workouts or other sequences and play them back on your Garmin device</h4>-->
+            <img src="/static/images/workouts.png"/>
         </div>
     </div>
 </div>

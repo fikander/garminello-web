@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Garminello</title>
+        <title>{{ app_name }}</title>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
         <link rel="stylesheet" href="/static/stylesheets/garminello.css">
@@ -16,7 +16,7 @@
         <div id="root" class="container">
             <nav>
                 <ul>
-                    <li><a href="/">Garminello</a></li>
+                    <li><a href="/"><span class="fa fa-check-square-o"></span> Garminello</a></li>
                     {% if isAuthenticated %}
                         <li><a href="/home">Home</a></li>
                         <li><a href="/logout">Logout</a></li>
@@ -26,16 +26,20 @@
                 </ul>
             </nav>
 
-            <ul id="messages" class="messages">
-            {% for message in messages %}
-                <li class="alert {{ message.type }}">{{ message.message }}</li>
-            {% endfor %}
-            </ul>
+            <div class="row">
+                <ul id="messages" class="messages">
+                {% for message in messages %}
+                    <li class="alert {{ message.type }}">{{ message.message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
 
             {% block content %}{% endblock %}
 
             <footer>
-                2016, by <a href="">Tomasz Kustrzynski</a>
+                <div class="text-center">
+                    2016, by <a href="">Tomasz Kustrzynski</a>
+                </div>
             </footer>
         </div>
     </body>
