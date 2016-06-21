@@ -71,6 +71,7 @@ Some useful commands for deploying with Heroku:
 
 	heroku addons:create heroku-postgresql:hobby-dev
 	heroku pg:psql
+	heroku pg:psql --app garminello DATABASE
 
 Heroku config variables to set (see sample.env for example values):
 

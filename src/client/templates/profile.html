@@ -7,25 +7,27 @@
 
 {% block content %}
 <script id="watch_template" type="text/template">
-<div class="watch-container">
-    type: <%= model.get('type') %><br/>
-    active: <%= model.get('active') %><br/>
-    created: <%= model.get('created_at') %><br/>
-    updated: <%= model.get('updated_at') %><br/>
-    activated: <%= model.get('activated_at') %><br/>
-    <img src="<%= model.getIcon() %>"/>
-    <button class="delete btn btn-info btn-sm">Unregister</button>
-</div>
+    Type: <%= model.get('type') %><br/>
+    Added: <%= model.formatCreatedAt() %><br/>
+    Active: <% if (model.get('active')) {print('Yes');} else {print ('No');} %><br/>
+    <div class="text-center">
+        <img src="<%= model.getIcon() %>"/>
+        <br/><br/>
+        <button class="delete btn btn-sm">Unregister</button>
+    </div>
 </script>
 
 <script id="trello_token_template" type="text/template">
     <a href="<%= me.url %>"><%= me.fullName %> (<%= username %>)</a>
     Boards:<% print(me.idBoards.length); %>
-    <button class="deauthorise btn btn-warning">Deauthorise</button>
+    <button class="deauthorise btn btn-sm">Deauthorise</button>
 </script>
 
 <script id="trello_token_missing_template" type="text/template">
-    <button class="authorise btn btn-info">Authorise</button>
+    <div class="alert alert-warning" role="alert"><strong>Authorise with Trello account</strong> before using the app!</div>
+    <div class="text-center">
+        <button class="authorise btn btn-lg btn-primary">Authorise with Trello</button>
+    </div>
 </script>
 
 <div id="root" class="container">
@@ -35,16 +37,19 @@
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
     <div class="row">
-        <div class="col-sm-6">
-            <div class="well">
+        <div class="col-sm-12">
+            <div class="well row">
                 <h3>Trello account</h3>
                 <div id="trelloToken"></div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div id="watchList" class="well">
+        <div class="col-sm-12">
+            <div id="watchList" class="well row">
+                <h3>Registered devices</h3>
+                <div class="text-center">
+                <button id="register-watch-button" type="button" class="btn btn-lg btn-primary"><span class="fa fa-plus"></span> Register device</button>
+                </div>
                 <div id="list"></div>
-                <button id="register-watch-button" type="button" class="btn btn-info">Register watch</button>
             </div>
         </div>
     </div>
@@ -67,7 +72,13 @@
                         <label>Activation code</label>
                         <input id="activation_code" type="text" class="form-control" name="activation" placeholder="8 character code">
                     </div>
-                    <button id="register_watch" type="submit" class="btn btn-warning btn-lg">Register Watch</button>
+                    <button id="register_watch" type="submit" class="btn btn-warning btn-lg">Register Device</button>
+                    <div class="text-center" id="spinner">
+                        <div class="alert alert-info" role="alert">
+                            <strong>Waiting for the device.</strong> Follow instructions on your device's screen.
+                        </div> 
+                        <span type="submit" class="spinner fa fa-spinner"></span>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

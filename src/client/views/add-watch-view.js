@@ -17,6 +17,9 @@ export class AddWatchView extends BaseView {
 		this.render();
 
 		this.listenTo(this, 'watch-registered', this.watchRegistered);
+
+		this.$el.find('#spinner').hide();
+		this.$el.find('#register_watch').show();
 	}
 
 	render() {
@@ -71,6 +74,8 @@ export class AddWatchView extends BaseView {
 	}
 
 	waitForWatchRegistered() {
+		this.$el.find('#register_watch').hide();
+		this.$el.find('#spinner').show();
 		this.pollId = setTimeout(_.bind(this.pollWatchRegistered, this), 1000);
 	}
 

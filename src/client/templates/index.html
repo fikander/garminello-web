@@ -16,10 +16,11 @@
                 <a class="btn btn-lg btn-primary" href="http://apps.garmin.com"><span class="fa fa-external-link"></span> Install</a>
             </div>
             <div class="col-sm-6">
-                <h3>2. Sign up and register device</h3>
                 {% if isAuthenticated %}
+                    <h3>2. Register device</h3>
                     <a class="btn btn-lg btn-primary" href="/home">Account</a>
                 {% else %}
+                    <h3>2. Sign up and register device</h3>
                     <a class="btn btn-lg btn-primary" href="/register">Sign up</a>
                     <p><a href="/login">Already have an account? Login</a></p>
                 {% endif %}

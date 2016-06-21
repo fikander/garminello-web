@@ -100,7 +100,7 @@ gulp.task('clean', function() {
   return del(['build', 'public']);
 });
 
-gulp.task('build', ['clean', 'uglify', 'minify', 'assets']);
+gulp.task('build', ['uglify', 'minify', 'assets']);
 
 gulp.task('watch', function() {
   gulp.watch('src/client/**/*.js', ['build', 'test']);

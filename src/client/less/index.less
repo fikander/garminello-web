@@ -28,6 +28,15 @@ nav ul > li {
 	margin-left: 20px;
 }
 
+.watch-container {
+	display: block;
+	float: left;
+	max-width: 300px;
+	padding: 20px;
+	border: 1px solid #2e6da4;
+    border-radius: 4px;	
+}
+
 .watch-container img {
 	height: 128px;
 	width: 128px;
@@ -39,4 +48,14 @@ nav ul > li {
 
 .benefits img {
 	width: 100%;
+}
+
+.spinner {
+	font-size: 2em;
+	animation: spin 2s linear infinite;	
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

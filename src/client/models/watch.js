@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import moment from 'moment';
 
 export class Watch extends Backbone.Model {
 	constructor(options) {
@@ -24,6 +25,10 @@ export class Watch extends Backbone.Model {
 		} else {
 			return Watch.images[null];
 		}
+	}
+
+	formatCreatedAt() {
+		return moment(this.created_at).format('YYYY-MM-DD');
 	}
 }
 

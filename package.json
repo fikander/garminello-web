@@ -27,6 +27,7 @@
     "express-validator": "^2.10.0",
     "jquery": "^2.2.4",
     "knex": "^0.8.6",
+    "moment": "^2.13.0",
     "node-trello": "1.1.2",
     "passport": "~0.3.2",
     "passport-facebook": "~2.1.1",
