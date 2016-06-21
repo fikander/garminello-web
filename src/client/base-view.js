@@ -8,7 +8,7 @@ export class BaseView extends Backbone.View {
 
 	showMessage(message, type=BaseView.MESSAGE_INFO) {
 		this.clearMessages();
-		this.$messages.append(`<li>${ message }</li>`);
+		this.$messages.append(`<li class="alert alert-warning" roler="alert">${ message }</li>`);
 	}
 
 	clearMessages() {

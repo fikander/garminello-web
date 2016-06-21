@@ -21,9 +21,16 @@ exports.profile = function(req, res) {
 };
 
 
-exports.trelloAuthorise = function (req, res) {
+exports.trelloAuthorise = function(req, res) {
     res.render('trello_authorise', {
     	trello_api_key: config.TRELLO_API_KEY,
     	app_name: config.APP_NAME
     });
+};
+
+exports.whatIsIt = function(req, res) {
+    res.render('what-is-it', {
+        app_name: config.APP_NAME,
+        user: req.user
+    })
 };

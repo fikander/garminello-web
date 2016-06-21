@@ -13,14 +13,14 @@
     <div class="text-center">
         <img src="<%= model.getIcon() %>"/>
         <br/><br/>
-        <button class="delete btn btn-sm">Unregister</button>
+        <button class="delete btn btn-default btn-sm">Unregister</button>
     </div>
 </script>
 
 <script id="trello_token_template" type="text/template">
     <a href="<%= me.url %>"><%= me.fullName %> (<%= username %>)</a>
-    Boards:<% print(me.idBoards.length); %>
-    <button class="deauthorise btn btn-sm">Deauthorise</button>
+    (<% print(me.idBoards.length); %> boards)&nbsp;&nbsp;
+    <button class="deauthorise btn btn-default btn-sm">Deauthorise</button>
 </script>
 
 <script id="trello_token_missing_template" type="text/template">

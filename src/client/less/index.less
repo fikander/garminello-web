@@ -11,21 +11,32 @@ h1, h3 {
 	color: #00436a;
 }
 
-nav {
+.main-nav {
 	float: left;
 	margin-top: 20px;
-	clear: both;
 	font-size: 1.5em;
+	ul {
+		list-style: none;
+	}
+	ul > li {
+		float: left;
+		display: list-item;
+		margin-left: 30px;
+	}
+	ul > li:first-child {
+		margin-left: 0px;
+	}
 }
 
-nav ul {
+.messages {
 	list-style: none;
+	li {
+		margin-top: 20px;
+	}
 }
 
-nav ul > li {
-	float: left;
-	display: list-item;
-	margin-left: 20px;
+.messages li {
+	margin-top: 20px;
 }
 
 .watch-container {
@@ -34,20 +45,18 @@ nav ul > li {
 	max-width: 300px;
 	padding: 20px;
 	border: 1px solid #2e6da4;
-    border-radius: 4px;	
-}
-
-.watch-container img {
-	height: 128px;
-	width: 128px;
+    border-radius: 4px;
+    img {
+		height: 180px;
+		width: 180px;    
+    }
 }
 
 .benefits {
 	margin-bottom: 20px;
-}
-
-.benefits img {
-	width: 100%;
+	img {
+		width: 100%;
+	}
 }
 
 .spinner {

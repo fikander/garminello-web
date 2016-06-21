@@ -14,9 +14,11 @@
     </head>
     <body>
         <div id="root" class="container">
-            <nav>
+            <div class="nav">
+                <div class="main-nav">
                 <ul>
                     <li><a href="/"><span class="fa fa-check-square-o"></span> Garminello</a></li>
+                    <li><a href="/what-is-it">What is it?</a></li>
                     {% if isAuthenticated %}
                         <li><a href="/home">Home</a></li>
                         <li><a href="/logout">Logout</a></li>
@@ -24,12 +26,13 @@
                         <li><a href="/login">Login</a></li>
                     {% endif %}
                 </ul>
-            </nav>
+                </div>
+            </div>
 
             <div class="row">
                 <ul id="messages" class="messages">
                 {% for message in messages %}
-                    <li class="alert {{ message.type }}">{{ message.message }}</li>
+                    <li class="alert alert-warning {{ message.type }}" role="alert">{{ message.message }}</li>
                 {% endfor %}
                 </ul>
             </div>
