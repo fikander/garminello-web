@@ -48,6 +48,52 @@
             <img src="/static/images/workouts.png"/>
         </div>
     </div>
+
+    <hr/>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Trello boards on Garmin devices</h3>
+            <p>Garminello allows you to view your Trello boards and lists. All boards visible from you Trello account will be available in the app.
+            </p>
+            <p>To set up, simply
+            <ul>
+                <li><a href="/register">Create and account</a> on this site.</li>
+                <li>Link your account to Trello from <a href="/home">your profile page</a>.</li>
+                <li>Install and launch <a href="http://apps.garmin.com">Garmin app</a>. It will display an 8 character activation code.</li>
+                <li>Use this code to register your Garmin device from <a href="/home">your profile page</a>.</li>
+            </ul>
+            </p>
+        </div>
+        <div class="col-sm-6">
+            <h3>Play sequences defined in Trello (e.g. workouts)</h3>
+            <p>To play any Trello list, choose relevant board in the app, navigate to the list and choose [Play List] from the menu (see the <a href="#app_screen_diagram">app diagram</a> below).
+            </p>
+            <p>
+            To define how long each card from the list will show for, simply add duration to the Trello card summary, e.g. "Warm up <strong>[3m 30s]</strong>"</p>
+            <p>Format the duration as minutes and seconds in the following way: <strong>[XXm YYs]</strong>. You don't have to specify both minutes and seconds. Examples: <ul>
+            <li>"Push-ups <strong>[2m 30s]</strong>"</li>
+            <li>"Rest <strong>[30s]</strong>"</li>
+            <li>"Meditation <strong>[15m]</strong>".</li>
+            </ul>
+            </p>
+            <p>While playing the list, each card will be shown for the defined duration.
+            </p>
+        </div>
+        <div class="col-sm-6">
+        <img src="/static/images/screenshots/trello_workout_small.png" style="width:100%"/>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 id="app_screen_diagram">The Garminello Connect IQ app screen diagram</h3>
+            <p>Here's how to navigate the app after device has been registered and your account linked to Trello.</p>
+            <a target="blank" href="/static/images/app_diagram.png"><img src="/static/images/app_diagram.png" style="width:100%;"/></a>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
