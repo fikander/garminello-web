@@ -1,6 +1,8 @@
 # What it is
 
-Server for garminello - integration of Garmin devices with Trello. 
+Server for garminello - integration of Garmin devices with Trello.
+
+Hosted at http://garminello.herokuapp.com
 
 # Setup dev environment
 
