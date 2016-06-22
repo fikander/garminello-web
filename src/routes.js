@@ -16,7 +16,7 @@ module.exports = function(app) {
     // Home
 	app.get('/', indexController.home);
 	app.get('/home', ensureAuthenticated, indexController.profile);
-    app.get('/what-is-it', indexController.whatIsIt);
+    app.get('/privacy', indexController.privacy);
 
     // Bind trello
 	app.get('/trello_authorise', ensureAuthenticated, indexController.trelloAuthorise);

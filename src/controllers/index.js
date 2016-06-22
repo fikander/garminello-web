@@ -28,8 +28,8 @@ exports.trelloAuthorise = function(req, res) {
     });
 };
 
-exports.whatIsIt = function(req, res) {
-    res.render('what-is-it', {
+exports.privacy = function(req, res) {
+    res.render('privacy', {
         app_name: config.APP_NAME,
         user: req.user
     })
