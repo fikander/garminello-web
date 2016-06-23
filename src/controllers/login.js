@@ -2,11 +2,15 @@
 
 var crypto = require('crypto'),
     passport = require('passport'),
-    models = require('../models/models');
+    models = require('../models/models'),
+    config = require('../config/app');
 
 
 exports.registerPage = function(req, res) {
-    res.render('signup', {username: req.flash('username')});
+    res.render('signup', {
+        username: req.flash('username'),
+        analytics_tracking_id: config.ANALYTICS_TRACKING_ID
+    });
 };
 
 
@@ -47,7 +51,10 @@ exports.registerPost = function(req, res) {
 
 
 exports.loginPage = function(req, res) {
-    res.render('login', {username: req.flash('username')});
+    res.render('login', {
+        username: req.flash('username'),
+        analytics_tracking_id: config.ANALYTICS_TRACKING_ID
+    });
 };
 
 

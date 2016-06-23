@@ -4,6 +4,8 @@ module.exports = Object.freeze({
 	VERSION: '1.0',
 	DEBUG: process.env.DEBUG || false,
 	ENVIRONMENT: process.env.ENVIRONMENT || 'production', // development|staging|production
+	// Google Analytics
+	ANALYTICS_TRACKING_ID: process.env.ANALYTICS_TRACKING_ID,
 
 	DATABASE_URL: process.env.DATABASE_URL,
 
