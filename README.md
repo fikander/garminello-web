@@ -3,6 +3,7 @@
 Server for garminello - integration of Garmin devices with Trello.
 
 Hosted at http://garminello.herokuapp.com
+Garmin Connect IQ Store: https://apps.garmin.com/en-US/apps/da6ba406-488c-4f10-83d4-3e70507d4656
 
 # Setup dev environment
 
