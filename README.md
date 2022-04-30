@@ -59,6 +59,17 @@ To enter Postgres prompt
 
 # Heroku
 
+Setup Heroku:
+- Create heroku remote
+
+	[remote "heroku"]
+		url = https://git.heroku.com/garminello.git
+		fetch = +refs/heads/*:refs/remotes/heroku/*
+
+	heroku login
+	git push heroku master
+	heroku open
+
 Some useful commands for deploying with Heroku:
 
 	heroku logs --tail
