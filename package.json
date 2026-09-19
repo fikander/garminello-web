@@ -5,8 +5,11 @@
   "author": "Tomasz Kustrzynski <tomasz.kustrzynski@gmail.com>",
   "main": "src/server.js",
   "engines": {
-    "node": ">=4.4.5",
-    "npm": ">=2.15.5"
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "overrides": {
+    "graceful-fs": "^4.2.11"
   },
   "scripts": {
     "postinstall": "gulp build",

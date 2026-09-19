@@ -54,13 +54,20 @@ from an environment with normal internet access.
   paid dyno (or elsewhere), the hosted instance is likely not running.
   This alone could explain "it doesn't work" independent of whether the
   Trello integration code itself is still correct.
-- `package.json` pins `"node": ">=4.4.5"` / `"npm": ">=2.15.5"` — Node 4 has
-  been EOL since 2018. A fresh `npm install` on any current Node/npm is not
-  guaranteed to reproduce the original dependency tree (no lockfile is
-  committed), and some transitive deps this old may no longer install
-  cleanly against modern npm/registry behavior.
-- `postinstall` runs `gulp build`, which depends on `gulp` 3.x — known to be
-  incompatible with modern Node major versions in some cases.
+- **Update (2026-09-19):** `package.json` now pins `"node": ">=22.0.0"` /
+  `"npm": ">=10.0.0"` and a `package-lock.json` is committed. `npm install
+  --legacy-peer-deps` and the `postinstall` `gulp build` were both verified
+  to succeed on Node 22.22.2 (the peer-dep conflict is `consolidate@1.0.4`
+  wanting `react@>=16.13.1` while this app pins `react@^15`; harmless since
+  `consolidate`'s React support isn't used here — only its `swig` adapter
+  is). `gulp` 3.x's `vinyl-fs`/`gaze` chain pulled in an ancient
+  `graceful-fs` that crashed on Node 22 (`primordials is not defined`,
+  via the `natives` package patching `fs`); fixed with an `overrides`
+  entry pinning `graceful-fs` to `^4.2.11` across the tree — no gulpfile
+  or plugin changes were needed. The server was also smoke-tested end to
+  end against a local Postgres 16: `GET /` renders the Swig homepage, and
+  `POST /api/watch/register` returns the documented always-200
+  `{status, error}` envelope.
 
 ## Dead code (not a runtime bug, but worth knowing)
 

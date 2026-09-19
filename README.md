@@ -47,6 +47,12 @@ Then in the docker container:
 
 to start watching and rebuilding client stuff.
 
+Note: this app targets Node.js 22+ (see `engines` in `package.json`). Some
+dependencies (`consolidate`/`react`) have outdated peer dependency
+declarations, so `npm install` needs `--legacy-peer-deps`:
+
+	npm install --legacy-peer-deps
+
 Use grip (https://github.com/joeyespo/grip) to view README.md. From within container:
 
 	grip README.md 0.0.0.0:6419
