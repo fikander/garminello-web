@@ -65,7 +65,7 @@ See `docs/INTEGRATION_STATUS.md` for the full list. Highlights:
 - Heroku's free dyno tier was discontinued in Nov 2022; last commit here is
   from Apr 2022, so the hosted instance is likely not running unless it's
   since been moved to a paid dyno or another host.
-- Dependencies were modernized on 2026-09-29; see `hanover.md` for state and open items.
+- Dependencies were modernized on 2026-09-29; see `handover.md` for state and open items.
 - Trello's REST endpoints actually used (`/1/members/me/boards`,
   `/1/boards/:id/lists`) and the browser `//api.trello.com/1/client.js`
   SDK are the parts most likely to have drifted — could not be verified
