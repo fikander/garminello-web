@@ -54,21 +54,38 @@ from an environment with normal internet access.
   paid dyno (or elsewhere), the hosted instance is likely not running.
   This alone could explain "it doesn't work" independent of whether the
   Trello integration code itself is still correct.
-- `package.json` pins `"node": ">=4.4.5"` / `"npm": ">=2.15.5"` — Node 4 has
-  been EOL since 2018. A fresh `npm install` on any current Node/npm is not
-  guaranteed to reproduce the original dependency tree (no lockfile is
-  committed), and some transitive deps this old may no longer install
-  cleanly against modern npm/registry behavior.
-- `postinstall` runs `gulp build`, which depends on `gulp` 3.x — known to be
-  incompatible with modern Node major versions in some cases.
 
-## Dead code (not a runtime bug, but worth knowing)
+## Modernization (2026-09-29)
 
-- `passport-facebook` is a dependency and `src/config/auth.js` has a
-  Facebook app config (with placeholder `'1234'` credentials), but
-  `src/util/passport.js` never calls `passport.use(new FacebookStrategy(...))`.
-  Only the local email/password strategy is actually active. No Facebook
-  login route exists in `routes.js` either.
+Done from this sandbox and verified against a local PostgreSQL 16 (register,
+login/logout, watch CRUD, watch-facing `/api/watch/*` endpoints, migrations,
+seeds); Trello itself still unreachable from here (403 from the egress proxy).
+
+- Node >=20 (`.nvmrc` 22), Dockerfile on `node:22`, lockfile committed.
+- Express 5, Knex 3, Bookshelf 1.2 (knex peer range forced via `overrides`),
+  pg 8, Passport 0.7, connect-pg-simple 10, express-session 1.19.
+- Removed: gulp 3 + phantomjs test runner (replaced by `build.js` using esbuild,
+  less, autoprefixer), `node-trello` (replaced by fetch-based `src/util/trello.js`),
+  `express-validator`, `react*`, the `crypto` npm placeholder, and the dead
+  Facebook strategy/config.
+- Migration `20260929000000` converts `json` columns to `jsonb` (Bookshelf 1.x
+  eager loading uses `select distinct`, which Postgres rejects on `json`).
+- Old migrations/seeds rewritten for modern Knex (no injected `Promise`).
+- Session secret can now be set via `SESSION_SECRET` (falls back to the old hardcoded value).
+- `npm test` runs mocha in Node (7 tests: flash middleware, email validation, Trello client).
+
+Remaining known issues:
+- `npm audit`: 4 findings, all via `swig-templates` -> `optimist` -> `minimist`
+  (CLI-only, not reachable at runtime). Swig is unmaintained; moving to another engine
+  (nunjucks is nearly syntax-compatible) is the long-term fix.
+- Passwords are HMAC-SHA1 with a weak salt (`Math.random`). Should migrate to
+  scrypt/bcrypt with rehash-on-login.
+- Bookshelf is effectively abandoned; consider Knex-only queries.
+- Client still relies on jQuery/underscore/Bootstrap 3 globals from CDNs.
+
+## Dead code
+
+None known (Facebook strategy removed).
 
 ## Suggested next steps (from an environment with real network access)
 

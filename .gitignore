@@ -2,3 +2,5 @@
 .env
 .env-dev
 docker-compose.yml
+public
+build

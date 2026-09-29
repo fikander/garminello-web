@@ -3,7 +3,8 @@
 var crypto = require('crypto'),
     passport = require('passport'),
     models = require('../models/models'),
-    config = require('../config/app');
+    config = require('../config/app'),
+    isEmail = require('../util/validate').isEmail;
 
 
 exports.registerPage = function(req, res) {
@@ -27,11 +28,8 @@ exports.registerPost = function(req, res) {
         return;
     }
 
-    req.checkBody('un', 'Please enter a valid email.').notEmpty().isEmail();
-    var errors = req.validationErrors();
-    if (errors) {
-        var msg = errors[0].msg;
-        req.flash('error', msg);
+    if (!isEmail(un)) {
+        req.flash('error', 'Please enter a valid email.');
         res.redirect('/register');
         return;
     }
@@ -63,12 +61,12 @@ exports.checkLogin = function(req, res, next) {
         if (err || !user) {
             console.log(err);
             req.flash('username', req.body.un);
-            req.flash('error', info.message);
+            req.flash('error', (info && info.message) || 'Login failed.');
             return res.redirect('/login');
         }
         req.logIn(user, function(err) {
             if (err) {
-                req.flash('error', info.message);
+                req.flash('error', (info && info.message) || 'Login failed.');
                 return res.redirect('/login');
             }
             req.flash('success', 'Welcome!');
@@ -78,8 +76,11 @@ exports.checkLogin = function(req, res, next) {
 };
 
 
-exports.logout = function(req, res) {
-    req.logout();
-    req.flash('info', 'You are now logged out.');
-    res.redirect('/login');
+exports.logout = function(req, res, next) {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        // passport 0.6+ regenerates the session on logout, so flash afterwards
+        req.flash('info', 'You are now logged out.');
+        res.redirect('/login');
+    });
 };

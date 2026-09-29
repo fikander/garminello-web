@@ -2,7 +2,7 @@
 
 const config = require('../config/app');
 const models = require('../models/models');
-const Trello = require('node-trello');
+const Trello = require('../util/trello');
 
 //
 // 1. Watch generates activation code
@@ -247,7 +247,7 @@ exports.apiBoardLists = function(req, res) {
     }
     var trello = new Trello(config.TRELLO_API_KEY, trello_token);
     trello.get(
-        '/1/boards/' + board_id + '/lists',
+        '/1/boards/' + encodeURIComponent(board_id) + '/lists',
         { fields: 'name', cards: 'open', card_fields: 'name' },
         function(err, data) {
             if (err) {

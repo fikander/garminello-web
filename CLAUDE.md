@@ -14,14 +14,12 @@ For more detail see `docs/ARCHITECTURE.md` and `docs/INTEGRATION_STATUS.md`.
 
 ## Stack
 
-- Node.js + Express 4 (very old `engines.node: >=4.4.5` — long EOL, see status doc)
-- Bookshelf/Knex ORM over PostgreSQL
-- Passport (local email/password strategy only — a `passport-facebook`
-  strategy is wired into `package.json`/`config/auth.js` but never
-  registered with passport, so it's dead code)
-- Server-rendered views via Swig templates
-- Client app: Backbone.js + jQuery, built with gulp/browserify/babel
-- `node-trello` for server-side Trello REST calls; Trello's browser
+- Node.js >=20 (`.nvmrc`: 22) + Express 5. Tests: `npm test` (mocha + chai, `src/test/`)
+- Bookshelf 1.2 / Knex 3 ORM over PostgreSQL (bookshelf's knex peer range is stale; `overrides` in package.json forces knex 3. Eager loads use `select distinct`, hence `json` columns became `jsonb` in migration 20260929000000)
+- Passport 0.7 (local email/password strategy only)
+- Server-rendered views via Swig templates (`swig-templates` fork)
+- Client app: Backbone.js + jQuery, bundled with esbuild (`build.js`; `npm run build` / `npm run watch`)
+- `src/util/trello.js` (fetch-based, replaced `node-trello`) for server-side Trello REST calls; Trello's browser
   `client.js` SDK for the OAuth-style token handshake done in the browser
 - Deployment target: Heroku (`Procfile`, `Dockerfile` for local dev only)
 
@@ -31,7 +29,7 @@ For more detail see `docs/ARCHITECTURE.md` and `docs/INTEGRATION_STATUS.md`.
 src/
   server.js          Express app bootstrap
   routes.js          All route definitions (see docs/ARCHITECTURE.md for the full table)
-  config/            app.js (env-driven config), auth.js (unused FB config), db.js
+  config/            app.js (env-driven config), db.js
   controllers/       index.js (pages), login.js (auth), api.js (REST API, incl. watch-facing API)
   models/            Bookshelf models: User, Watch, TrelloToken
   migrations/        Knex schema migrations
@@ -47,7 +45,7 @@ See `README.md` for the full docker-compose + ngrok workflow. Summary:
    `TRELLO_OAUTH_SECRET` (from Trello's Power-Ups admin / API key page).
 2. `cp docker-compose-sample.yml docker-compose.yml`, adjust volumes.
 3. `docker-compose build && docker-compose up -d`
-4. Inside the container: `gulp build` then `gulp watch`.
+4. Inside the container: `npm run build` then `npm run watch`.
 
 ## Two distinct APIs served from `routes.js`
 
@@ -67,9 +65,7 @@ See `docs/INTEGRATION_STATUS.md` for the full list. Highlights:
 - Heroku's free dyno tier was discontinued in Nov 2022; last commit here is
   from Apr 2022, so the hosted instance is likely not running unless it's
   since been moved to a paid dyno or another host.
-- Dependency versions are ~2016-era (Express 4.13, Knex 0.8, Bookshelf 0.8,
-  `node-trello` 1.1.2); `npm install` under a modern Node/npm may fail or
-  behave differently than originally deployed.
+- Dependencies were modernized on 2026-09-29; see `handover.md` for state and open items.
 - Trello's REST endpoints actually used (`/1/members/me/boards`,
   `/1/boards/:id/lists`) and the browser `//api.trello.com/1/client.js`
   SDK are the parts most likely to have drifted — could not be verified

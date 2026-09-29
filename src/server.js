@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-const expressValidator = require('express-validator');
 const cons = require('consolidate');
 
 const passport = require('passport');
@@ -25,10 +24,15 @@ knex.migrate.latest({
 			directory: './src/seeds'
 		});
 	}
+}).catch(function(err) {
+	console.error('Database initialisation failed', err);
+	process.exit(1);
 });
 const Bookshelf = require('bookshelf');
 
 // Constants
+// Falls back to the historical secret so existing sessions stay valid; set SESSION_SECRET in production.
+const SESSION_SECRET = process.env.SESSION_SECRET || 'weroWJgj32hDWOfr923nwfWji32bzppwbi34';
 const PORT = process.env.PORT || 8080;
 
 // App
@@ -46,13 +50,12 @@ app.set('views', './src/client/templates');
 // middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(expressValidator());
 app.use(session({
 	store: new pgSession({
 		conString: config.DATABASE_URL,
 		tableName: 'session'
 	}),
-	secret: 'weroWJgj32hDWOfr923nwfWji32bzppwbi34',
+	secret: SESSION_SECRET,
 	resave: true,
 	saveUninitialized: false,
 	cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
