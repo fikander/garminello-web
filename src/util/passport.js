@@ -3,7 +3,6 @@
 //configuring the strategies for passport
 const crypto = require('crypto');
 const LocalStrategy = require('passport-local').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
 const models = require('../models/models');
 
 // expose this function to our app using module.exports

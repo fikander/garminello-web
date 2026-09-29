@@ -14,14 +14,12 @@ For more detail see `docs/ARCHITECTURE.md` and `docs/INTEGRATION_STATUS.md`.
 
 ## Stack
 
-- Node.js + Express 4 (very old `engines.node: >=4.4.5` — long EOL, see status doc)
-- Bookshelf/Knex ORM over PostgreSQL
-- Passport (local email/password strategy only — a `passport-facebook`
-  strategy is wired into `package.json`/`config/auth.js` but never
-  registered with passport, so it's dead code)
-- Server-rendered views via Swig templates
-- Client app: Backbone.js + jQuery, built with gulp/browserify/babel
-- `node-trello` for server-side Trello REST calls; Trello's browser
+- Node.js >=20 (`.nvmrc`: 22) + Express 5. Tests: `npm test` (mocha + chai, `src/test/`)
+- Bookshelf 1.2 / Knex 3 ORM over PostgreSQL (bookshelf's knex peer range is stale; `overrides` in package.json forces knex 3. Eager loads use `select distinct`, hence `json` columns became `jsonb` in migration 20260929000000)
+- Passport 0.7 (local email/password strategy only)
+- Server-rendered views via Swig templates (`swig-templates` fork)
+- Client app: Backbone.js + jQuery, bundled with esbuild (`build.js`; `npm run build` / `npm run watch`)
+- `src/util/trello.js` (fetch-based, replaced `node-trello`) for server-side Trello REST calls; Trello's browser
   `client.js` SDK for the OAuth-style token handshake done in the browser
 - Deployment target: Heroku (`Procfile`, `Dockerfile` for local dev only)
 
@@ -47,7 +45,7 @@ See `README.md` for the full docker-compose + ngrok workflow. Summary:
    `TRELLO_OAUTH_SECRET` (from Trello's Power-Ups admin / API key page).
 2. `cp docker-compose-sample.yml docker-compose.yml`, adjust volumes.
 3. `docker-compose build && docker-compose up -d`
-4. Inside the container: `gulp build` then `gulp watch`.
+4. Inside the container: `npm run build` then `npm run watch`.
 
 ## Two distinct APIs served from `routes.js`
 

@@ -1,8 +1,7 @@
-FROM node:argon
+FROM node:22
 
 # vim for occassional fiddling with dev files
-RUN apt-get update && apt-get --yes install vim python-pip
-RUN pip install grip
+RUN apt-get update && apt-get --yes install vim
 
 # installing global packages as root
 RUN npm install -g nodemon

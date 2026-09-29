@@ -42,14 +42,10 @@ Run Docker containers:
 
 Then in the docker container:
 
-	gulp build
-	gulp watch
+	npm run build
+	npm run watch
 
 to start watching and rebuilding client stuff.
-
-Use grip (https://github.com/joeyespo/grip) to view README.md. From within container:
-
-	grip README.md 0.0.0.0:6419
 
 
 To enter Postgres prompt
@@ -112,7 +108,7 @@ Before using heroku local, export settings to local .env (copy and edit sample.e
 - Knex, Bookshelf
 - Promises
 - BackboneJS
-- gulp and browserify to setup client app build environment
+- esbuild (see build.js) to setup client app build environment
 - REST API
 
 # Useful articles
