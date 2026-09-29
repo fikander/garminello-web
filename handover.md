@@ -22,7 +22,7 @@ so seeds run): register, login/logout, `/api/watches`, `/api/trello_token`, `/ap
 Trello itself unreachable from the sandbox (403), so real Trello calls are untested. No browser check of the UI.
 
 ## Open / next steps
-1. Open a PR if wanted; deploy check (Heroku free tier ended Nov 2022; `garminello.herokuapp.com` status unknown).
+1. Open a PR if wanted; deploy check (`garminello.herokuapp.com` is live per the owner; dyno sleeps when idle).
 2. Browser smoke test of the profile page and the Trello authorise flow with a real API key
    (client relies on jQuery/underscore globals from CDN and `window.Trello`).
 3. `npm audit`: 4 findings via `swig-templates` -> `optimist` -> `minimist` (CLI only). Long-term: move to nunjucks.

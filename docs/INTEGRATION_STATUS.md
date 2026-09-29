@@ -49,11 +49,10 @@ from an environment with normal internet access.
 
 - Last commit in `garminello-web`: **2022-04-30**. Last commit in
   `garminello-watch`: **2016-06-22**.
-- Heroku discontinued free dynos in **November 2022** — after this repo's
-  last commit. Unless `garminello.herokuapp.com` has since been moved to a
-  paid dyno (or elsewhere), the hosted instance is likely not running.
-  This alone could explain "it doesn't work" independent of whether the
-  Trello integration code itself is still correct.
+- Heroku discontinued free dynos in **November 2022**, but the owner
+  confirmed (2026-09) that `garminello.herokuapp.com` is still live, with a
+  dyno that sleeps when idle — expect a cold-start delay on first request,
+  which may exceed the watch's HTTP timeout.
 
 ## Modernization (2026-09-29)
 

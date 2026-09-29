@@ -10,7 +10,8 @@ Live instance (historically): https://garminello.herokuapp.com — see
 not be verified live from this environment (outbound network to
 `api.trello.com` / `*.herokuapp.com` is blocked by sandbox policy).
 
-For more detail see `docs/ARCHITECTURE.md` and `docs/INTEGRATION_STATUS.md`.
+For more detail see `docs/ARCHITECTURE.md`, `docs/INTEGRATION_STATUS.md`,
+and `docs/REWRITE_PLAN.md` (modern-stack rewrite estimate).
 
 ## Stack
 
@@ -62,9 +63,8 @@ See `README.md` for the full docker-compose + ngrok workflow. Summary:
 ## Known risks / things to check before assuming this works
 
 See `docs/INTEGRATION_STATUS.md` for the full list. Highlights:
-- Heroku's free dyno tier was discontinued in Nov 2022; last commit here is
-  from Apr 2022, so the hosted instance is likely not running unless it's
-  since been moved to a paid dyno or another host.
+- Per the owner (2026-09), `garminello.herokuapp.com` is still live (dyno
+  sleeps when idle, so the first request after idle is slow).
 - Dependencies were modernized on 2026-09-29; see `handover.md` for state and open items.
 - Trello's REST endpoints actually used (`/1/members/me/boards`,
   `/1/boards/:id/lists`) and the browser `//api.trello.com/1/client.js`
